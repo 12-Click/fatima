@@ -1,120 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Storytelling with Custom Pop-ups</title>
-
-  <!-- Include A-Frame and AR.js -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-
-  <style>
-    .popup {
-      display: none;
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 350px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 2px solid #333;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-      z-index: 10;
-    }
-    .popup h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .popup p {
-      font-size: 16px;
-    }
-    .close-btn {
-      display: block;
-      margin: 10px auto 0;
-      padding: 5px 10px;
-      background: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miracle of the Sun - Fatima AR Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/3.2.0/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
 
-  <!-- Pop-up Text Box -->
-  <div id="popup" class="popup">
-    <h2 id="popup-title">Event Title</h2>
-    <p id="popup-text">This is detailed information about the event.</p>
-    <div id="popup-media"></div>
-    <button class="close-btn" onclick="closePopup()">Close</button>
-  </div>
+    <a-scene embedded arjs>
+        <!-- Custom Marker -->
+        <a-marker type="pattern" url="assets/your_custom_marker.patt">
+            <a-entity id="scenario1" position="0 0 0">
+                <a-image src="assets/scenario1_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
+                <a-video src="assets/scenario1_video.mp4" width="1.5" height="1" position="0 0.5 0.1"></a-video>
+                <a-text value="The first vision of the Miracle of the Sun." position="0 -0.5 0.1" align="center" width="2"></a-text>
+                <a-text value="Quiz: What date did the Miracle occur?" position="0 -1 0.1" align="center" width="2"></a-text>
+                <a-entity id="quiz1" position="0 -1.5 0.1">
+                    <a-text value="1. May 13" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
+                    <a-text value="2. June 13" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
+                    <a-text value="3. July 13" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
+                </a-entity>
+            </a-entity>
 
-  <!-- A-Frame Scene for AR -->
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
-    <!-- Background sound -->
-    <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
+            <a-entity id="scenario2" position="0 0 0" visible="false">
+                <a-image src="assets/scenario2_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
+                <a-video src="assets/scenario2_video.mp4" width="1.5" height="1" position="0 0.5 0.1"></a-video>
+                <a-text value="The event that amazed thousands." position="0 -0.5 0.1" align="center" width="2"></a-text>
+                <a-text value="Quiz: How many people witnessed the event?" position="0 -1 0.1" align="center" width="2"></a-text>
+                <a-entity id="quiz2" position="0 -1.5 0.1">
+                    <a-text value="1. 10,000" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
+                    <a-text value="2. 70,000" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
+                    <a-text value="3. 100,000" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
+                </a-entity>
+            </a-entity>
 
-    <!-- Scenario 1: Video playback with pop-up and text -->
-    <a-nft type="nft" url="assets/scenario1/image1.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <a-video src="#scenario1-video" width="4" height="2.5" position="0 0 0" scale="1 1 1" autoplay="true" loop="true" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 1: The Miracle', 'In this scenario, you will watch a video depicting the Miracle of the Sun at Fatima.', 'video', 'assets/scenario1/video1.mp4')"></a-video>
-      <a-assets>
-        <video id="scenario1-video" src="assets/scenario1/video1.mp4" autoplay loop></video>
-      </a-assets>
-    </a-nft>
+            <a-entity id="scenario3" position="0 0 0" visible="false">
+                <a-image src="assets/scenario3_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
+                <a-gif src="assets/scenario3_gif.gif" width="1.5" height="1" position="0 0.5 0.1"></a-gif>
+                <a-text value="Witnesses shared their experiences." position="0 -0.5 0.1" align="center" width="2"></a-text>
+                <a-text value="Quiz: Who was one of the key witnesses?" position="0 -1 0.1" align="center" width="2"></a-text>
+                <a-entity id="quiz3" position="0 -1.5 0.1">
+                    <a-text value="1. Lucia dos Santos" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
+                    <a-text value="2. Francisco Marto" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
+                    <a-text value="3. Jacinta Marto" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
+                </a-entity>
+            </a-entity>
+        </a-marker>
 
-    <!-- Scenario 2: GIF display with pop-up and text -->
-    <a-nft type="nft" url="assets/scenario2/image2.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <a-image src="assets/scenario2/image2.gif" width="3" height="3" position="0 0 0" scale="1 1 1" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 2: The Vision', 'This scenario shows a GIF related to the vision during the Fatima event.', 'image', 'assets/scenario2/image2.gif')"></a-image>
-    </a-nft>
+        <a-entity camera></a-entity>
+    </a-scene>
 
-    <!-- Scenario 3: Regular image display with pop-up and text -->
-    <a-nft type="nft" url="assets/scenario3/image3.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <a-image src="assets/scenario3/image3.jpg" width="3" height="3" position="0 0 0" scale="1 1 1" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 3: The Witnesses', 'In this scenario, you can see an image of the witnesses present during the event.', 'image', 'assets/scenario3/image3.jpg')"></a-image>
-    </a-nft>
+    <div id="ui">
+        <button onclick="showScenario(1)">Scenario 1</button>
+        <button onclick="showScenario(2)">Scenario 2</button>
+        <button onclick="showScenario(3)">Scenario 3</button>
+        <div id="feedback" style="display: none;"></div>
+    </div>
 
-    <!-- Camera setup -->
-    <a-entity camera></a-entity>
-  </a-scene>
+    <script>
+        function showScenario(num) {
+            document.querySelectorAll('a-entity[id^="scenario"]').forEach((entity, index) => {
+                entity.setAttribute('visible', index + 1 === num);
+            });
+        }
 
-  <script>
-    function showPopup(title, content, type, mediaPath) {
-      // Show the title and text in the popup
-      document.getElementById('popup-title').innerText = title;
-      document.getElementById('popup-text').innerText = content;
-      
-      // Add the media (video or image) dynamically to the pop-up
-      let mediaContainer = document.getElementById('popup-media');
-      mediaContainer.innerHTML = ''; // Clear existing content
-
-      if (type === 'video') {
-        // Create video element
-        let videoElement = document.createElement('video');
-        videoElement.src = mediaPath;
-        videoElement.controls = true;
-        videoElement.width = 300;
-        mediaContainer.appendChild(videoElement);
-      } else if (type === 'image') {
-        // Create image element (GIFs work the same way)
-        let imgElement = document.createElement('img');
-        imgElement.src = mediaPath;
-        imgElement.width = 300;
-        mediaContainer.appendChild(imgElement);
-      }
-
-      // Display the pop-up
-      document.getElementById('popup').style.display = 'block';
-    }
-
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-    }
-  </script>
+        function checkAnswer(answer) {
+            const feedbackElement = document.getElementById('feedback');
+            feedbackElement.style.display = 'block';
+            if (answer === 'B') { // Correct answer for each scenario
+                feedbackElement.innerHTML = "Correct! Well done.";
+            } else {
+                feedbackElement.innerHTML = "Wrong answer. Try again!";
+            }
+        }
+    </script>
 </body>
 </html>
