@@ -3,27 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR.js Image Tracking Storytelling</title>
-  
-  <!-- A-Frame and AR.js libraries -->
+  <title>AR Storytelling with Custom Pop-ups</title>
+
+  <!-- Include A-Frame and AR.js -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 
   <style>
-    /* Basic styling for the pop-up */
     .popup {
-      display: none; /* Hidden by default */
+      display: none;
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 300px;
+      width: 350px;
       padding: 20px;
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid #333;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
       z-index: 10;
+    }
+    .popup h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .popup p {
+      font-size: 16px;
     }
     .close-btn {
       display: block;
@@ -38,81 +44,75 @@
   </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
-  
-  <!-- Pop-up HTML -->
+
+  <!-- Pop-up Text Box -->
   <div id="popup" class="popup">
-    <h2>Event Title</h2>
-    <p>This is detailed information about the event. You can include images, videos, or anything you like!</p>
+    <h2 id="popup-title">Event Title</h2>
+    <p id="popup-text">This is detailed information about the event.</p>
+    <div id="popup-media"></div>
     <button class="close-btn" onclick="closePopup()">Close</button>
   </div>
 
-  <!-- A-Frame scene for AR experience -->
+  <!-- A-Frame Scene for AR -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
-    
-    <!-- Background music -->
+    <!-- Background sound -->
     <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
 
-    <!-- Scenario 1: The Miracle of the Sun -->
-    <a-image src="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/images/test1.jpeg" 
-             position="0 0 0" 
-             scale="1 1 1" 
-             rotation="0 0 0"></a-image>
-             
-    <a-nft type="nft" url="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/images/test1.jpeg" smooth="true">
-      <a-entity gltf-model="url(images/ladyfatima.glb)" 
-                position="0 0 0" 
-                scale="0.5 0.5 0.5"
-                onclick="showPopup('The Miracle of the Sun', 'This is detailed information about the Miracle of the Sun event. You can include images, videos, or anything you like!');">
-      </a-entity>
-      
-      <a-text value="The Miracle of the Sun" 
-              position="0 0.8 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="showPopup('The Miracle of the Sun', 'This is detailed information about the Miracle of the Sun event. You can include images, videos, or anything you like!');">
-      </a-text>
+    <!-- Scenario 1: Video playback with pop-up and text -->
+    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario1-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <a-video src="#scenario1-video" width="4" height="2.5" position="0 0 0" scale="1 1 1" autoplay="true" loop="true" 
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 1: The Miracle', 'In this scenario, you will watch a video depicting the Miracle of the Sun at Fatima.', 'video', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario1-video.mp4')"></a-video>
+      <a-assets>
+        <video id="scenario1-video" src="https://yourgithubusername.github.io/your-repo-name/assets/scenario1-video.mp4" autoplay loop></video>
+      </a-assets>
     </a-nft>
 
-    <!-- Scenario 2: Another Event -->
-    <a-image src="https://raw.githubusercontent.com/yourusername/ar-storytelling/main/scenario2-image.jpg" 
-             position="1 0 0" 
-             scale="1 1 1" 
-             rotation="0 0 0"></a-image>
-             
-    <a-nft type="nft" url="https://raw.githubusercontent.com/yourusername/ar-storytelling/main/scenario2-image.jpg" smooth="true">
-      <a-entity gltf-model="url(assets/scenario2-model.glb)" 
-                position="1 0 0" 
-                scale="0.5 0.5 0.5"
-                onclick="showPopup('Another Event', 'Details about this other event can be provided here. Include any additional information you would like to share.');">
-      </a-entity>
-      
-      <a-text value="Another Event" 
-              position="1 0.8 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="showPopup('Another Event', 'Details about this other event can be provided here. Include any additional information you would like to share.');">
-      </a-text>
+    <!-- Scenario 2: GIF display with pop-up and text -->
+    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario2-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <a-image src="https://yourgithubusername.github.io/your-repo-name/assets/scenario2-gif.gif" width="3" height="3" position="0 0 0" scale="1 1 1" 
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 2: The Vision', 'This scenario shows a GIF related to the vision during the Fatima event.', 'image', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario2-gif.gif')"></a-image>
     </a-nft>
 
-    <!-- Camera setup for AR experience -->
+    <!-- Scenario 3: Regular image display with pop-up and text -->
+    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <a-image src="https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image.jpg" width="3" height="3" position="0 0 0" scale="1 1 1" 
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 3: The Witnesses', 'In this scenario, you can see an image of the witnesses present during the event.', 'image', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image.jpg')"></a-image>
+    </a-nft>
+
+    <!-- Camera setup -->
     <a-entity camera></a-entity>
   </a-scene>
 
   <script>
-    function showPopup(title, content) {
-      // Set title and content in the pop-up
-      document.querySelector('#popup h2').innerText = title;
-      document.querySelector('#popup p').innerText = content;
-      // Show the pop-up
+    function showPopup(title, content, type, mediaURL) {
+      // Show the title and text in the popup
+      document.getElementById('popup-title').innerText = title;
+      document.getElementById('popup-text').innerText = content;
+      
+      // Add the media (video or image) dynamically to the pop-up
+      let mediaContainer = document.getElementById('popup-media');
+      mediaContainer.innerHTML = ''; // Clear existing content
+
+      if (type === 'video') {
+        // Create video element
+        let videoElement = document.createElement('video');
+        videoElement.src = mediaURL;
+        videoElement.controls = true;
+        videoElement.width = 300;
+        mediaContainer.appendChild(videoElement);
+      } else if (type === 'image') {
+        // Create image element (GIFs work the same way)
+        let imgElement = document.createElement('img');
+        imgElement.src = mediaURL;
+        imgElement.width = 300;
+        mediaContainer.appendChild(imgElement);
+      }
+
+      // Display the pop-up
       document.getElementById('popup').style.display = 'block';
     }
 
     function closePopup() {
-      // Hide the pop-up
       document.getElementById('popup').style.display = 'none';
     }
   </script>
