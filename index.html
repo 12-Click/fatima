@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR.js Image Tracking Storytelling</title>
+  <title>Virgen de Fátima y el Milagro del Sol</title>
   
   <!-- A-Frame and AR.js libraries -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
   <!-- A-Frame scene for AR experience -->
-  <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
     
     <!-- Background music -->
     <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
 
     <!-- Scenario 1: The Miracle of the Sun -->
-    <a-nft type="nft" url="assets/scenario1-image.patt" smooth="true">
+    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario1-image.jpg" 
+             position="0 0 0" 
+             scale="1 1 1" 
+             rotation="0 0 0"></a-image>
+             
+    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario1-image.jpg" smooth="true">
       <a-entity gltf-model="url(assets/scenario1-model.glb)" 
                 position="0 0 0" 
                 scale="0.5 0.5 0.5"
@@ -40,7 +45,12 @@
     </a-nft>
 
     <!-- Scenario 2: Another Religious Event -->
-    <a-nft type="nft" url="assets/scenario2-image.patt" smooth="true">
+    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario2-image.jpg" 
+             position="0 0 0" 
+             scale="1 1 1" 
+             rotation="0 0 0"></a-image>
+             
+    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario2-image.jpg" smooth="true">
       <a-entity gltf-model="url(assets/scenario2-model.glb)" 
                 position="0 0 0" 
                 scale="0.5 0.5 0.5"
@@ -63,7 +73,12 @@
     </a-nft>
 
     <!-- Scenario 3: Yet Another Event -->
-    <a-nft type="nft" url="assets/scenario3-image.patt" smooth="true">
+    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario3-image.jpg" 
+             position="0 0 0" 
+             scale="1 1 1" 
+             rotation="0 0 0"></a-image>
+             
+    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario3-image.jpg" smooth="true">
       <a-entity gltf-model="url(assets/scenario3-model.glb)" 
                 position="0 0 0" 
                 scale="0.5 0.5 0.5"
