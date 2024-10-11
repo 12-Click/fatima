@@ -3,32 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Tracking AR Experience</title>
+  <title>Interactive Storytelling & Educational AR</title>
   <!-- A-Frame and AR.js libraries -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
   <a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 4x4;'>
-    
-    <!-- Image-based AR marker -->
-    <a-marker type="pattern" url="assets/my-image-marker.patt">
-      
-      <!-- 3D model that will appear when the image is recognized -->
-      <a-entity gltf-model="url(assets/my-3dmodel.glb)" position="0 0 0" scale="0.5 0.5 0.5" animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
-      
-      <!-- Example of GIF that will appear -->
-      <a-image src="assets/my-gif.gif" position="1 0 0" scale="0.5 0.5 0.5"></a-image>
 
-      <!-- Example of a Video Popup -->
-      <a-video src="#my-video" position="0 1 -2" scale="1 1 1"></a-video>
+    <!-- First educational scene - Miracle of the Sun -->
+    <a-marker type="pattern" url="assets/miracle-of-the-sun.patt">
+      <a-entity gltf-model="url(assets/miracle-sun-3d.glb)" position="0 0 0" scale="0.5 0.5 0.5" 
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
+      <a-text value="The Miracle of the Sun - Fatima" position="0 0.8 0" scale="1.5 1.5 1.5"></a-text>
+      <a-image src="assets/miracle-sun-gif.gif" position="1 0 0" scale="0.6 0.6 0.6"></a-image>
     </a-marker>
-    
+
+    <!-- Second scene - Appearance of Our Lady of Fatima -->
+    <a-marker type="pattern" url="assets/our-lady-of-fatima.patt">
+      <a-entity gltf-model="url(assets/our-lady-fatima-3d.glb)" position="0 0 0" scale="0.5 0.5 0.5" 
+                animation="property: scale; to: 0.6 0.6 0.6; loop: true; dur: 4000"></a-entity>
+      <a-text value="Appearance of Our Lady of Fatima" position="0 0.8 0" scale="1.5 1.5 1.5"></a-text>
+      <a-video src="#video-fatima" position="0 1 -2" scale="1.5 1.5 1.5"></a-video>
+    </a-marker>
+
+    <!-- Third scene - The Three Shepherd Children -->
+    <a-marker type="pattern" url="assets/shepherd-children.patt">
+      <a-entity gltf-model="url(assets/shepherd-children-3d.glb)" position="0 0 0" scale="0.5 0.5 0.5" 
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 5000"></a-entity>
+      <a-text value="The Three Shepherd Children" position="0 0.8 0" scale="1.5 1.5 1.5"></a-text>
+      <a-image src="assets/shepherd-gif.gif" position="1 0 0" scale="0.6 0.6 0.6"></a-image>
+    </a-marker>
+
+    <!-- Fourth scene - The Message of Fatima -->
+    <a-marker type="pattern" url="assets/message-fatima.patt">
+      <a-entity gltf-model="url(assets/message-3d.glb)" position="0 0 0" scale="0.5 0.5 0.5"></a-entity>
+      <a-text value="Message of Fatima: Peace and Penance" position="0 0.8 0" scale="1.5 1.5 1.5"></a-text>
+    </a-marker>
+
     <!-- Camera setup for AR.js -->
     <a-entity camera></a-entity>
   </a-scene>
 
-  <!-- Video asset -->
-  <video id="my-video" autoplay loop="true" src="assets/my-video.mp4" style="display:none;"></video>
+  <!-- Video asset for the second scene -->
+  <video id="video-fatima" autoplay loop="true" src="assets/fatima-video.mp4" style="display:none;"></video>
 </body>
 </html>
