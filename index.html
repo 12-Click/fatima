@@ -17,47 +17,28 @@
                 <a-image src="assets/scenario1_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
                 <a-video src="assets/scenario1_video.mp4" width="1.5" height="1" position="0 0.5 0.1"></a-video>
                 <a-text value="The first vision of the Miracle of the Sun." position="0 -0.5 0.1" align="center" width="2"></a-text>
-                <a-text value="Quiz: What date did the Miracle occur?" position="0 -1 0.1" align="center" width="2"></a-text>
-                <a-entity id="quiz1" position="0 -1.5 0.1">
-                    <a-text value="1. May 13" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
-                    <a-text value="2. June 13" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
-                    <a-text value="3. July 13" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
-                </a-entity>
             </a-entity>
 
             <a-entity id="scenario2" position="0 0 0" visible="false">
                 <a-image src="assets/scenario2_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
                 <a-video src="assets/scenario2_video.mp4" width="1.5" height="1" position="0 0.5 0.1"></a-video>
                 <a-text value="The event that amazed thousands." position="0 -0.5 0.1" align="center" width="2"></a-text>
-                <a-text value="Quiz: How many people witnessed the event?" position="0 -1 0.1" align="center" width="2"></a-text>
-                <a-entity id="quiz2" position="0 -1.5 0.1">
-                    <a-text value="1. 10,000" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
-                    <a-text value="2. 70,000" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
-                    <a-text value="3. 100,000" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
-                </a-entity>
             </a-entity>
 
             <a-entity id="scenario3" position="0 0 0" visible="false">
                 <a-image src="assets/scenario3_image.jpg" width="1.5" height="1" position="0 0 0.1"></a-image>
-                <a-gif src="assets/scenario3_gif.gif" width="1.5" height="1" position="0 0.5 0.1"></a-gif>
                 <a-text value="Witnesses shared their experiences." position="0 -0.5 0.1" align="center" width="2"></a-text>
-                <a-text value="Quiz: Who was one of the key witnesses?" position="0 -1 0.1" align="center" width="2"></a-text>
-                <a-entity id="quiz3" position="0 -1.5 0.1">
-                    <a-text value="1. Lucia dos Santos" position="-0.5 0 0" align="center" width="2" color="#000" onclick="checkAnswer('A')"></a-text>
-                    <a-text value="2. Francisco Marto" position="-0.5 -0.5 0" align="center" width="2" color="#000" onclick="checkAnswer('B')"></a-text>
-                    <a-text value="3. Jacinta Marto" position="-0.5 -1 0" align="center" width="2" color="#000" onclick="checkAnswer('C')"></a-text>
-                </a-entity>
             </a-entity>
         </a-marker>
 
-        <a-entity camera></a-entity>
+        <!-- Camera Entity -->
+        <a-entity camera look-controls></a-entity>
     </a-scene>
 
     <div id="ui">
         <button onclick="showScenario(1)">Scenario 1</button>
         <button onclick="showScenario(2)">Scenario 2</button>
         <button onclick="showScenario(3)">Scenario 3</button>
-        <div id="feedback" style="display: none;"></div>
     </div>
 
     <script>
@@ -65,16 +46,6 @@
             document.querySelectorAll('a-entity[id^="scenario"]').forEach((entity, index) => {
                 entity.setAttribute('visible', index + 1 === num);
             });
-        }
-
-        function checkAnswer(answer) {
-            const feedbackElement = document.getElementById('feedback');
-            feedbackElement.style.display = 'block';
-            if (answer === 'B') { // Correct answer for each scenario
-                feedbackElement.innerHTML = "Correct! Well done.";
-            } else {
-                feedbackElement.innerHTML = "Wrong answer. Try again!";
-            }
         }
     </script>
 </body>
