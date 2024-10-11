@@ -59,24 +59,24 @@
     <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
 
     <!-- Scenario 1: Video playback with pop-up and text -->
-    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario1-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+    <a-nft type="nft" url="assets/scenario1/image1.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
       <a-video src="#scenario1-video" width="4" height="2.5" position="0 0 0" scale="1 1 1" autoplay="true" loop="true" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 1: The Miracle', 'In this scenario, you will watch a video depicting the Miracle of the Sun at Fatima.', 'video', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario1-video.mp4')"></a-video>
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 1: The Miracle', 'In this scenario, you will watch a video depicting the Miracle of the Sun at Fatima.', 'video', 'assets/scenario1/video1.mp4')"></a-video>
       <a-assets>
-        <video id="scenario1-video" src="https://yourgithubusername.github.io/your-repo-name/assets/scenario1-video.mp4" autoplay loop></video>
+        <video id="scenario1-video" src="assets/scenario1/video1.mp4" autoplay loop></video>
       </a-assets>
     </a-nft>
 
     <!-- Scenario 2: GIF display with pop-up and text -->
-    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario2-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <a-image src="https://yourgithubusername.github.io/your-repo-name/assets/scenario2-gif.gif" width="3" height="3" position="0 0 0" scale="1 1 1" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 2: The Vision', 'This scenario shows a GIF related to the vision during the Fatima event.', 'image', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario2-gif.gif')"></a-image>
+    <a-nft type="nft" url="assets/scenario2/image2.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <a-image src="assets/scenario2/image2.gif" width="3" height="3" position="0 0 0" scale="1 1 1" 
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 2: The Vision', 'This scenario shows a GIF related to the vision during the Fatima event.', 'image', 'assets/scenario2/image2.gif')"></a-image>
     </a-nft>
 
     <!-- Scenario 3: Regular image display with pop-up and text -->
-    <a-nft type="nft" url="https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-      <a-image src="https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image.jpg" width="3" height="3" position="0 0 0" scale="1 1 1" 
-      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 3: The Witnesses', 'In this scenario, you can see an image of the witnesses present during the event.', 'image', 'https://yourgithubusername.github.io/your-repo-name/assets/scenario3-image.jpg')"></a-image>
+    <a-nft type="nft" url="assets/scenario3/image3.patt" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <a-image src="assets/scenario3/image3.jpg" width="3" height="3" position="0 0 0" scale="1 1 1" 
+      event-set__click="_event: click; _target: #popup; visible: true; _delay: 500; _addClass: popup-active; _update: showPopup('Scenario 3: The Witnesses', 'In this scenario, you can see an image of the witnesses present during the event.', 'image', 'assets/scenario3/image3.jpg')"></a-image>
     </a-nft>
 
     <!-- Camera setup -->
@@ -84,7 +84,7 @@
   </a-scene>
 
   <script>
-    function showPopup(title, content, type, mediaURL) {
+    function showPopup(title, content, type, mediaPath) {
       // Show the title and text in the popup
       document.getElementById('popup-title').innerText = title;
       document.getElementById('popup-text').innerText = content;
@@ -96,14 +96,14 @@
       if (type === 'video') {
         // Create video element
         let videoElement = document.createElement('video');
-        videoElement.src = mediaURL;
+        videoElement.src = mediaPath;
         videoElement.controls = true;
         videoElement.width = 300;
         mediaContainer.appendChild(videoElement);
       } else if (type === 'image') {
         // Create image element (GIFs work the same way)
         let imgElement = document.createElement('img');
-        imgElement.src = mediaURL;
+        imgElement.src = mediaPath;
         imgElement.width = 300;
         mediaContainer.appendChild(imgElement);
       }
