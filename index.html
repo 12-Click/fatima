@@ -3,13 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virgen de Fátima y el Milagro del Sol</title>
+  <title>AR.js Image Tracking Storytelling</title>
   
   <!-- A-Frame and AR.js libraries -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    /* Basic styling for the pop-up */
+    .popup {
+      display: none; /* Hidden by default */
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid #333;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+    .close-btn {
+      display: block;
+      margin: 10px auto 0;
+      padding: 5px 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
+  
+  <!-- Pop-up HTML -->
+  <div id="popup" class="popup">
+    <h2>Event Title</h2>
+    <p>This is detailed information about the event. You can include images, videos, or anything you like!</p>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  </div>
+
   <!-- A-Frame scene for AR experience -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
     
@@ -17,91 +53,68 @@
     <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
 
     <!-- Scenario 1: The Miracle of the Sun -->
-    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario1-image.jpg" 
+    <a-image src="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/images/test1.jpeg" 
              position="0 0 0" 
              scale="1 1 1" 
              rotation="0 0 0"></a-image>
              
-    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario1-image.jpg" smooth="true">
+    <a-nft type="nft" url="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/images/test1.jpeg" smooth="true">
       <a-entity gltf-model="url(assets/scenario1-model.glb)" 
                 position="0 0 0" 
                 scale="0.5 0.5 0.5"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
-                onclick="document.querySelector('a-sound').components.sound.playSound();">
+                onclick="showPopup('The Miracle of the Sun', 'This is detailed information about the Miracle of the Sun event. You can include images, videos, or anything you like!');">
       </a-entity>
       
       <a-text value="The Miracle of the Sun" 
               position="0 0.8 0" 
               scale="1.5 1.5 1.5" 
               color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
               event-set__mouseenter="color: orange" 
               event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about the Miracle of the Sun!');">
+              onclick="showPopup('The Miracle of the Sun', 'This is detailed information about the Miracle of the Sun event. You can include images, videos, or anything you like!');">
       </a-text>
-
-      <!-- Optional video for Scenario 1 -->
-      <a-video src="assets/scenario1-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
     </a-nft>
 
-    <!-- Scenario 2: Another Religious Event -->
-    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario2-image.jpg" 
-             position="0 0 0" 
+    <!-- Scenario 2: Another Event -->
+    <a-image src="https://raw.githubusercontent.com/yourusername/ar-storytelling/main/scenario2-image.jpg" 
+             position="1 0 0" 
              scale="1 1 1" 
              rotation="0 0 0"></a-image>
              
-    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario2-image.jpg" smooth="true">
+    <a-nft type="nft" url="https://raw.githubusercontent.com/yourusername/ar-storytelling/main/scenario2-image.jpg" smooth="true">
       <a-entity gltf-model="url(assets/scenario2-model.glb)" 
-                position="0 0 0" 
+                position="1 0 0" 
                 scale="0.5 0.5 0.5"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
-                onclick="document.querySelector('a-sound').components.sound.playSound();">
+                onclick="showPopup('Another Event', 'Details about this other event can be provided here. Include any additional information you would like to share.');">
       </a-entity>
       
       <a-text value="Another Event" 
-              position="0 0.8 0" 
+              position="1 0.8 0" 
               scale="1.5 1.5 1.5" 
               color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
               event-set__mouseenter="color: orange" 
               event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about this event!');">
+              onclick="showPopup('Another Event', 'Details about this other event can be provided here. Include any additional information you would like to share.');">
       </a-text>
-
-      <!-- Optional video for Scenario 2 -->
-      <a-video src="assets/scenario2-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
-    </a-nft>
-
-    <!-- Scenario 3: Yet Another Event -->
-    <a-image src="https://raw.githubusercontent.com/username/repository-name/main/scenario3-image.jpg" 
-             position="0 0 0" 
-             scale="1 1 1" 
-             rotation="0 0 0"></a-image>
-             
-    <a-nft type="nft" url="https://raw.githubusercontent.com/username/repository-name/main/scenario3-image.jpg" smooth="true">
-      <a-entity gltf-model="url(assets/scenario3-model.glb)" 
-                position="0 0 0" 
-                scale="0.5 0.5 0.5"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
-                onclick="document.querySelector('a-sound').components.sound.playSound();">
-      </a-entity>
-      
-      <a-text value="Yet Another Event" 
-              position="0 0.8 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about yet another event!');">
-      </a-text>
-
-      <!-- Optional video for Scenario 3 -->
-      <a-video src="assets/scenario3-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
     </a-nft>
 
     <!-- Camera setup for AR experience -->
     <a-entity camera></a-entity>
   </a-scene>
+
+  <script>
+    function showPopup(title, content) {
+      // Set title and content in the pop-up
+      document.querySelector('#popup h2').innerText = title;
+      document.querySelector('#popup p').innerText = content;
+      // Show the pop-up
+      document.getElementById('popup').style.display = 'block';
+    }
+
+    function closePopup() {
+      // Hide the pop-up
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
