@@ -25,78 +25,57 @@
 </head>
 <body>
   <div id="ar-info">
-    Mueve tu telefono alrededor para aprender sobre la historia!
+    Mueve tu telefono alrededor para aprender sobre la hostoria!
   </div>
 
   <!-- A-Frame AR Scene -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
     
     <!-- 3D Model at the center -->
-    <a-entity 
-      id="model"
-      gltf-model="url(assets/mary1.glb)"
-      scale="1 1 1" 
-      position="0 0 -1"
-      rotation="0 0 0"
-      drag="enabled: true;" 
-      rotate="enabled: true;"
-      animation="property: rotation; to: 0 360 0; loop: true; dur: 10000;">
-    </a-entity>
+   <a-entity 
+    id="model"
+    gltf-model="url(assets/mary1.glb)"
+    scale="1 1 1" 
+    position="0 0 -1"
+    rotation="0 0 0"
+    drag="enabled: true;" 
+    rotate="enabled: true;"
+    animation="property: rotation; to: 0 360 0; loop: true; dur: 10000;">
+</a-entity>
+
 
     <!-- AR Text above the model -->
     <a-text value="13 de Octubre de 1917" 
-      position="0 1.5 -2"  <!-- Adjust position to be higher -->
+      position="0 1 -9"  
       scale="2 2 2" 
       color="blue">
     </a-text> 
 
-    <!-- AR Images positioned in a circular formation -->
-    <a-image id="image1" src="assets/noticias.jpg" 
-      position="2.5 0 -3"  <!-- Right -->
-      scale="2 2 2"
+    <!-- AR Image positioned to the left -->
+    <a-image id="image" src="assets/noticias.jpg" 
+      position="0 0 5" 
+      scale="4 4 4"
       rotation="0 0 0">
     </a-image>
 
-    <a-image id="image2" src="assets/pastorcitos.png" 
-      position="-2.5 0 -3"  <!-- Left -->
-      scale="2 2 2"
+   <!-- AR Image positioned to the left -->
+    <a-image id="image" src="assets/pastorcitos.png" 
+      position="0 0 10" 
+      scale="4 4 4"
       rotation="0 0 0">
     </a-image>
 
-    <a-image id="image3" src="assets/sol.png" 
-      position="0 2.5 -3"   <!-- Above -->
-      scale="2 2 2"
+     <!-- AR Image positioned to the left -->
+    <a-image id="image" src="assets/sol.png" 
+      position="0 0 30" 
+      scale="4 4 4"
       rotation="0 0 0">
     </a-image>
 
-    <a-image id="image4" src="assets/multitud.png" 
-      position="0 -2.5 -3"  <!-- Below -->
-      scale="2 2 2"
-      rotation="0 0 0">
-    </a-image>
-
-    <!-- Additional images arranged in a circle -->
-    <a-image id="image5" src="assets/noticias.jpg" 
-      position="1.8 1.8 -3"   <!-- Right-Top -->
-      scale="2 2 2"
-      rotation="0 0 0">
-    </a-image>
-
-    <a-image id="image6" src="assets/pastorcitos.png" 
-      position="-1.8 1.8 -3"  <!-- Left-Top -->
-      scale="2 2 2"
-      rotation="0 0 0">
-    </a-image>
-
-    <a-image id="image7" src="assets/sol.png" 
-      position="1.8 -1.8 -3"   <!-- Right-Bottom -->
-      scale="2 2 2"
-      rotation="0 0 0">
-    </a-image>
-
-    <a-image id="image8" src="assets/multitud.png" 
-      position="-1.8 -1.8 -3"   <!-- Left-Bottom -->
-      scale="2 2 2"
+     <!-- AR Image positioned to the left -->
+    <a-image id="image" src="assets/multitud.png" 
+      position="0 0 60" 
+      scale="4 4 4"
       rotation="0 0 0">
     </a-image>
 
@@ -110,5 +89,4 @@
   </script>
 
 </body>
-</html>
-
+</html> 
