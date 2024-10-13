@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Milagro de Fatima</title>
+  <title>AR Experience</title>
   <!-- Include A-Frame and AR.js -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
   <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
   <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
-
-  <!-- Include a pinch zoom library -->
-  <script src="https://cdn.jsdelivr.net/gh/michaltakac/aframe-touch-controls@0.0.4/dist/aframe-touch-controls.min.js"></script>
-
+  
   <style>
     body { margin: 0; overflow: hidden; }
     #ar-info {
@@ -28,15 +25,8 @@
 </head>
 <body>
   <div id="ar-info">
-    Mueve tu telefono alrededor para descubrir la historia!
+    Move your phone around to explore the AR scene!
   </div>
-
-    <!-- AR Text above the model -->
-    <a-text value="El Milagro del Sol en Fátima" 
-      position="0 1 1"  
-      scale="2 2 2" 
-      color="#1591ea">
-    </a-text>
 
   <!-- A-Frame AR Scene -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
@@ -44,9 +34,9 @@
     <!-- 3D Model at the center -->
     <a-entity 
       id="model"
-      gltf-model="url(assets/sun.glb)"
-      scale="1 1 1" 
-      position="0 0 10"
+      gltf-model="url(assets/mary1.glb)"
+      scale="2 2 2" 
+      position="0 0 -1"
       rotation="0 0 0"
       drag="enabled: true;" 
       rotate="enabled: true;">
@@ -59,12 +49,11 @@
       color="yellow">
     </a-text>
 
-    <!-- AR Image positioned to the left with pinch-to-zoom -->
-    <a-image id="image" src="assets/pastorcitos.png" 
-      position="0 0 9" 
-      scale="5 5 5"
-      rotation="0 0 0"
-      touch-controls="enabled: true">
+    <!-- AR Image positioned to the left -->
+    <a-image id="image" src="assets/noticias.jpg" 
+      position="-3 0 -5" 
+      scale="2 2 2"
+      rotation="0 0 0">
     </a-image>
 
     <!-- AR Video positioned to the right -->
@@ -77,8 +66,6 @@
   </a-scene>
 
   <script>
-  <script>
-
     // Remove AR info after 3 seconds
     setTimeout(() => {
       document.getElementById('ar-info').style.display = 'none';
@@ -86,4 +73,4 @@
   </script>
 
 </body>
-</html> 
+</html>
