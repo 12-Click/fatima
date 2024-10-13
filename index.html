@@ -40,7 +40,7 @@
     
     <!-- AR Text above the model -->
     <a-text value="El Milagro del Sol en Fátima" 
-      position="0 0 0"  
+      position="0 1 1"  
       scale="2 2 2" 
       color="#1591ea">
     </a-text>
@@ -51,9 +51,10 @@
       gltf-model="url(assets/mary1.glb)"
       scale="1 1 1" 
       position="0 0 -1"
-      rotation="0 20 0"
+      rotation="10 20 10"
       drag="enabled: true;" 
-      rotate="enabled: true;">
+      rotate="enabled: true;" 
+      touch-controls>
     </a-entity>
 
     <!-- Scenarios -->
@@ -135,23 +136,27 @@
       document.getElementById(scenarioId).setAttribute('visible', 'true');
     }
 
-    // Add pinch zoom functionality for the image
-    const imageEntity = document.querySelector('#image');
-    let initialScale = 2;
-    let scale = initialScale;
+    // Pinch zoom and touch rotation functionality
+    const imageEntities = document.querySelectorAll('a-image');
+    const modelEntity = document.getElementById('model');
 
-    imageEntity.addEventListener('touchstart', function (event) {
-      if (event.touches.length === 2) {
-        // Pinch zoom detected, capture initial distance
-        let startDistance = getTouchDistance(event.touches);
-        imageEntity.addEventListener('touchmove', function (event) {
-          if (event.touches.length === 2) {
-            let currentDistance = getTouchDistance(event.touches);
-            scale = initialScale * (currentDistance / startDistance);
-            imageEntity.setAttribute('scale', `${scale} ${scale} ${scale}`);
-          }
-        });
-      }
+    imageEntities.forEach(imageEntity => {
+      let initialScale = 2;
+      let scale = initialScale;
+
+      imageEntity.addEventListener('touchstart', function (event) {
+        if (event.touches.length === 2) {
+          // Pinch zoom detected, capture initial distance
+          let startDistance = getTouchDistance(event.touches);
+          imageEntity.addEventListener('touchmove', function (event) {
+            if (event.touches.length === 2) {
+              let currentDistance = getTouchDistance(event.touches);
+              scale = initialScale * (currentDistance / startDistance);
+              imageEntity.setAttribute('scale', `${scale} ${scale} ${scale}`);
+            }
+          });
+        }
+      });
     });
 
     function getTouchDistance(touches) {
@@ -159,6 +164,19 @@
       const dy = touches[0].pageY - touches[1].pageY;
       return Math.sqrt(dx * dx + dy * dy);
     }
+
+    // Enable model rotation on touch
+    modelEntity.addEventListener('touchmove', function (event) {
+      if (event.touches.length === 1) {
+        const touch = event.touches[0];
+        const movementX = touch.movementX || (touch.pageX - touch.clientX);
+        const movementY = touch.movementY || (touch.pageY - touch.clientY);
+        
+        // Apply rotation based on touch movement
+        modelEntity.object3D.rotation.y += movementX * 0.01; // Horizontal rotation
+        modelEntity.object3D.rotation.x -= movementY * 0.01; // Vertical rotation
+      }
+    });
   </script>
 
 </body>
