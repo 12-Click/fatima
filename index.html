@@ -1,184 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Milagro de Fatima</title>
-  <!-- Include A-Frame and AR.js -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
-  <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
-  <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/michaltakac/aframe-touch-controls@0.0.4/dist/aframe-touch-controls.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360-Degree AR Storytelling Experience</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/KhronosGroup/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
 
-  <style>
-    body { margin: 0; overflow: hidden; }
-    #ar-info {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      z-index: 1;
-    }
-    .scenario-text {
-      position: absolute;
-      color: yellow;
-      font-size: 24px;
-      text-align: center;
-      width: 100%;
-    }
-  </style>
+        a-scene {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-  <div id="ar-info">
-    Mueve tu teléfono alrededor para descubrir la historia!
-  </div>
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <a-entity 
+            id="model"
+            gltf-model="url(assets/fatima1.glb)" 
+            scale="0.5 0.5 0.5"
+            position="0 0 -2"
+            rotation="0 0 0"
+            draggable
+            animation-mixer>
+        </a-entity>
+        <a-entity camera></a-entity>
+    </a-scene>
 
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-    
-    <!-- AR Text above the model -->
-    <a-text value="El Milagro del Sol en Fátima" 
-      position="0 2 -3"  
-      scale="2 2 2" 
-      color="blue">
-    </a-text>
+    <script>
+        AFRAME.registerComponent('draggable', {
+            init: function () {
+                this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.el.addEventListener('touchstart', this.onMouseDown.bind(this));
+            },
 
-    <!-- 3D Model of Mary -->
-    <a-entity 
-      id="model"
-      gltf-model="url(assets/mary1.glb)"
-      scale="1 1 1" 
-      position="0 0 -2"
-      rotation="0 0 0"
-      drag="enabled: true;" 
-      rotate="enabled: true;" 
-      touch-controls>
-    </a-entity>
+            onMouseDown: function (evt) {
+                this.el.setAttribute('dragging', true);
+                this.lastMouseX = evt.clientX || evt.touches[0].clientX;
+                this.lastMouseY = evt.clientY || evt.touches[0].clientY;
 
-    <!-- Scenarios -->
-    <a-entity id="scenario1" visible="false">
-      <a-text value="Los tres pastorcitos: Lucía, Francisco, y Jacinta" 
-        position="0 1.5 -1.5"  
-        scale="1.5 1.5 1.5" 
-        color="yellow">
-      </a-text>
-      <a-image src="https://github.com/12-Click/fatima/blob/ac44fa6bf75660a01e012bb3797c4aed1111e1e9/assets/pastorcitos.PNG" 
-        position="0 0 -1" 
-        scale="1 1 1" 
-        rotation="0 0 0" 
-        drag="enabled: true;" 
-        rotate="enabled: true;" 
-        touch-controls="enabled: true"></a-image>
-    </a-entity>
+                document.addEventListener('mousemove', this.onMouseMove.bind(this));
+                document.addEventListener('touchmove', this.onMouseMove.bind(this));
+                document.addEventListener('mouseup', this.onMouseUp.bind(this));
+                document.addEventListener('touchend', this.onMouseUp.bind(this));
+            },
 
-    <a-entity id="scenario2" visible="false">
-      <a-text value="La aparición de la Virgen María" 
-        position="0 1.5 -1.5"  
-        scale="1.5 1.5 1.5" 
-        color="yellow">
-      </a-text>
-      <a-image src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/virgen.jpg" 
-        position="0 0 -1" 
-        scale="1 1 1" 
-        rotation="0 0 0" 
-        drag="enabled: true;" 
-        rotate="enabled: true;" 
-        touch-controls="enabled: true"></a-image>
-    </a-entity>
+            onMouseMove: function (evt) {
+                if (this.el.getAttribute('dragging')) {
+                    const deltaX = (evt.clientX || evt.touches[0].clientX) - this.lastMouseX;
+                    const deltaY = (evt.clientY || evt.touches[0].clientY) - this.lastMouseY;
 
-    <a-entity id="scenario3" visible="false">
-      <a-text value="El Milagro del Sol" 
-        position="0 1.5 -1.5"  
-        scale="1.5 1.5 1.5" 
-        color="yellow">
-      </a-text>
-      <a-video src="https://example.com/your-video.mp4" 
-        position="0 0 -1"  
-        scale="1 1 1"
-        rotation="0 0 0"
-        drag="enabled: true;" 
-        rotate="enabled: true;"></a-video>
-    </a-entity>
+                    const rotation = this.el.getAttribute('rotation');
+                    rotation.y += deltaX * 0.1; // Rotate on Y-axis
+                    rotation.x -= deltaY * 0.1; // Rotate on X-axis
 
-    <!-- Navigation buttons -->
-    <a-box position="-2 0 -3" depth="0.1" height="0.5" width="1" color="blue" 
-      event-set__enter="_event: mouseenter; color: green" 
-      event-set__leave="_event: mouseleave; color: blue"
-      class="clickable" 
-      onclick="showScenario('scenario1')"></a-box>
-    <a-text value="Escenario 1" position="-2 0.5 -3" color="white" scale="1 1 1"></a-text>
+                    this.el.setAttribute('rotation', rotation);
 
-    <a-box position="2 0 -3" depth="0.1" height="0.5" width="1" color="blue" 
-      event-set__enter="_event: mouseenter; color: green" 
-      event-set__leave="_event: mouseleave; color: blue"
-      class="clickable" 
-      onclick="showScenario('scenario2')"></a-box>
-    <a-text value="Escenario 2" position="2 0.5 -3" color="white" scale="1 1 1"></a-text>
+                    this.lastMouseX = evt.clientX || evt.touches[0].clientX;
+                    this.lastMouseY = evt.clientY || evt.touches[0].clientY;
+                }
+            },
 
-    <a-box position="0 -0.5 -3" depth="0.1" height="0.5" width="1" color="blue" 
-      event-set__enter="_event: mouseenter; color: green" 
-      event-set__leave="_event: mouseleave; color: blue"
-      class="clickable" 
-      onclick="showScenario('scenario3')"></a-box>
-    <a-text value="Escenario 3" position="0 0 -3" color="white" scale="1 1 1"></a-text>
-
-  </a-scene>
-
-  <script>
-    // Remove AR info after 3 seconds
-    setTimeout(() => {
-      document.getElementById('ar-info').style.display = 'none';
-    }, 3000);
-
-    // Function to show the selected scenario
-    function showScenario(scenarioId) {
-      // Hide all scenarios
-      document.querySelectorAll('[id^="scenario"]').forEach(scenario => {
-        scenario.setAttribute('visible', 'false');
-      });
-      // Show the selected scenario
-      document.getElementById(scenarioId).setAttribute('visible', 'true');
-    }
-
-    // Pinch zoom and touch rotation functionality
-    const imageEntities = document.querySelectorAll('a-image');
-    const modelEntity = document.getElementById('model');
-
-    // Add touch controls for dragging and rotating
-    const allDraggableEntities = document.querySelectorAll('a-entity[drag], a-image[drag]');
-
-    allDraggableEntities.forEach(entity => {
-      entity.addEventListener('touchmove', function (event) {
-        // Handle dragging
-        if (event.touches.length === 1) {
-          const touch = event.touches[0];
-          const movementX = touch.movementX || (touch.pageX - touch.clientX);
-          const movementY = touch.movementY || (touch.pageY - touch.clientY);
-
-          // Apply drag movement
-          const position = entity.getAttribute('position');
-          entity.setAttribute('position', {
-            x: position.x + movementX * 0.01,
-            y: position.y - movementY * 0.01,
-            z: position.z
-          });
-        }
-
-        // Handle rotation
-        if (event.touches.length === 2) {
-          const touch1 = event.touches[0];
-          const touch2 = event.touches[1];
-          const centerX = (touch1.pageX + touch2.pageX) / 2;
-          const centerY = (touch1.pageY + touch2.pageY) / 2;
-
-          const rotationY = Math.atan2(centerY - window.innerHeight / 2, centerX - window.innerWidth / 2);
-          entity.object3D.rotation.y = rotationY; // Rotate based on touch position
-        }
-      });
-    });
-  </script>
-
+            onMouseUp: function () {
+                this.el.setAttribute('dragging', false);
+                document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+                document.removeEventListener('touchmove', this.onMouseMove.bind(this));
+                document.removeEventListener('mouseup', this.onMouseUp.bind(this));
+                document.removeEventListener('touchend', this.onMouseUp.bind(this));
+            }
+        });
+    </script>
 </body>
 </html>
