@@ -3,106 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virgen de Fátima y el Milagro del Sol - Image Marker Tracking</title>
-  
-  <!-- A-Frame and AR.js libraries -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-  <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
-  <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
-
+  <title>Image-Based AR Storytelling</title>
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-  <!-- A-Frame scene for AR experience -->
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
+  <!-- A-Frame Scene -->
+  <a-scene embedded arjs="sourceType: webcam; trackingMethod: best; debugUIEnabled: false;" vr-mode-ui="enabled: false">
     
-    <!-- Background music -->
-    <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
-
-    <!-- Scenario 1: The Miracle of the Sun -->
-    <a-marker type="pattern" url="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/assets/test1.patt">
-      <a-entity gltf-model="url(assets/mary1.glb)" 
-                position="0 1 0" 
-                scale="1 1 1" 
-                rotation="0 90 0"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;"
-                onclick="changeSizeAndPosition(this);">
+    <!-- NFT Tracking Setup for Image 1 -->
+    <a-nft type="nft" url="nft/image1" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <!-- Scenario 1: GLB Model with Text -->
+      <a-entity gltf-model="url(./models/model1.glb)" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0" gesture-handler>
+        <a-text value="This is model 1" position="0 2 0" color="#FFFFFF" scale="2 2 2"></a-text>
       </a-entity>
-      
-      <a-text value="The Miracle of the Sun" 
-              position="0 2 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about the Miracle of the Sun!');">
-      </a-text>
+    </a-nft>
 
-      <!-- Optional video for Scenario 1 -->
-      <a-video src="assets/scenario1-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
-    </a-marker>
-
-    <!-- Additional Scenarios -->
-
-    <!-- Scenario 2: Another Religious Event -->
-    <a-marker type="pattern" url="https://raw.githubusercontent.com/username/repository-name/main/scenario2-pattern.patt">
-      <a-entity gltf-model="url(assets/scenario2-model.glb)" 
-                position="0 1 0" 
-                scale="0.5 0.5 0.5"
-                onclick="changeSizeAndPosition(this);">
+    <!-- NFT Tracking Setup for Image 2 -->
+    <a-nft type="nft" url="nft/image2" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <!-- Scenario 2: GLB Model with Video -->
+      <a-entity gltf-model="url(./models/model2.glb)" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0" gesture-handler>
+        <a-video src="#video1" width="4" height="2.5" position="0 1 0"></a-video>
       </a-entity>
-      
-      <a-text value="Another Event" 
-              position="0 2 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about this event!');">
-      </a-text>
+    </a-nft>
 
-      <!-- Optional video for Scenario 2 -->
-      <a-video src="assets/scenario2-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
-    </a-marker>
-
-    <!-- Scenario 3: Yet Another Event -->
-    <a-marker type="pattern" url="https://raw.githubusercontent.com/username/repository-name/main/scenario3-pattern.patt">
-      <a-entity gltf-model="url(assets/scenario3-model.glb)" 
-                position="0 1 0" 
-                scale="0.5 0.5 0.5"
-                onclick="changeSizeAndPosition(this);">
+    <!-- NFT Tracking Setup for Image 3 -->
+    <a-nft type="nft" url="nft/image3" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <!-- Scenario 3: Info Text with Rotation -->
+      <a-entity rotation="0 0 0" gesture-handler>
+        <a-text value="Story element 3: Rotatable" position="0 2 0" color="#FF0000" scale="2 2 2"></a-text>
       </a-entity>
-      
-      <a-text value="Yet Another Event" 
-              position="0 2 0" 
-              scale="1.5 1.5 1.5" 
-              color="yellow"
-              event-set__mouseenter="color: orange" 
-              event-set__mouseleave="color: yellow" 
-              onclick="alert('Learn more about yet another event!');">
-      </a-text>
+    </a-nft>
 
-      <!-- Optional video for Scenario 3 -->
-      <a-video src="assets/scenario3-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
-    </a-marker>
+    <!-- NFT Tracking Setup for Image 4 -->
+    <a-nft type="nft" url="nft/image4" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <!-- Scenario 4: Video Content -->
+      <a-video src="#video2" width="5" height="3" position="0 1 0"></a-video>
+      <a-text value="Scenario 4: Video playing" position="0 2 0" color="#FFFFFF" scale="2 2 2"></a-text>
+    </a-nft>
 
-    <!-- Camera setup for AR experience -->
-    <a-entity camera></a-entity>
+    <!-- NFT Tracking Setup for Image 5 -->
+    <a-nft type="nft" url="nft/image5" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+      <!-- Scenario 5: Interactive Text Popup -->
+      <a-entity rotation="0 0 0" gesture-handler>
+        <a-text value="Tap to reveal more information" position="0 1 0" color="#00FF00" scale="1.5 1.5 1.5"></a-text>
+      </a-entity>
+    </a-nft>
+
+    <!-- Camera for AR view -->
+    <a-camera gps-camera rotation-reader></a-camera>
+
   </a-scene>
 
-  <script>
-    function changeSizeAndPosition(entity) {
-      // Generate random position within certain limits
-      const randomX = (Math.random() - 0.5) * 3; // Random X between -1.5 and 1.5
-      const randomZ = (Math.random() - 0.5) * 3; // Random Z between -1.5 and 1.5
-      
-      // Change the position of the entity
-      entity.setAttribute('position', { x: randomX, y: 1, z: randomZ }); // Position it randomly in the XZ plane
+  <!-- Include video sources -->
+  <video id="video1" loop autoplay>
+    <source src="./videos/video1.mp4" type="video/mp4">
+  </video>
+  <video id="video2" loop autoplay>
+    <source src="./videos/video2.mp4" type="video/mp4">
+  </video>
 
-      // Change the scale to a random size between 1 and 2
-      const randomScale = Math.random() + 1; // Scale between 1 and 2
-      entity.setAttribute('scale', { x: randomScale, y: randomScale, z: randomScale });
-    }
+  <!-- Gesture Handler Component for rotating and dragging -->
+  <script>
+    AFRAME.registerComponent('gesture-handler', {
+      schema: {
+        enabled: { default: true }
+      },
+      init: function () {
+        var el = this.el;
+        var isDragging = false;
+        var startPos = { x: 0, y: 0 };
+
+        el.addEventListener('mousedown', function (evt) {
+          isDragging = true;
+          startPos = { x: evt.clientX, y: evt.clientY };
+        });
+
+        window.addEventListener('mousemove', function (evt) {
+          if (!isDragging) return;
+
+          var deltaX = evt.clientX - startPos.x;
+          var deltaY = evt.clientY - startPos.y;
+
+          el.object3D.rotation.y += deltaX * 0.01;
+          el.object3D.rotation.x += deltaY * 0.01;
+          
+          startPos = { x: evt.clientX, y: evt.clientY };
+        });
+
+        window.addEventListener('mouseup', function () {
+          isDragging = false;
+        });
+      }
+    });
   </script>
 </body>
 </html>
