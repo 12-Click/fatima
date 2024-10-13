@@ -68,6 +68,8 @@
         position="0 0 -1" 
         scale="1 1 1" 
         rotation="0 0 0" 
+        drag="enabled: true;" 
+        rotate="enabled: true;" 
         touch-controls="enabled: true"></a-image>
     </a-entity>
 
@@ -81,6 +83,8 @@
         position="0 0 -1" 
         scale="1 1 1" 
         rotation="0 0 0" 
+        drag="enabled: true;" 
+        rotate="enabled: true;" 
         touch-controls="enabled: true"></a-image>
     </a-entity>
 
@@ -93,7 +97,9 @@
       <a-video src="https://example.com/your-video.mp4" 
         position="0 0 -1"  
         scale="1 1 1"
-        rotation="0 0 0"></a-video>
+        rotation="0 0 0"
+        drag="enabled: true;" 
+        rotate="enabled: true;"></a-video>
     </a-entity>
 
     <!-- Navigation buttons -->
@@ -140,42 +146,37 @@
     const imageEntities = document.querySelectorAll('a-image');
     const modelEntity = document.getElementById('model');
 
-    imageEntities.forEach(imageEntity => {
-      let initialScale = 2;
-      let scale = initialScale;
+    // Add touch controls for dragging and rotating
+    const allDraggableEntities = document.querySelectorAll('a-entity[drag], a-image[drag]');
 
-      imageEntity.addEventListener('touchstart', function (event) {
-        if (event.touches.length === 2) {
-          // Pinch zoom detected, capture initial distance
-          let startDistance = getTouchDistance(event.touches);
-          imageEntity.addEventListener('touchmove', function (event) {
-            if (event.touches.length === 2) {
-              let currentDistance = getTouchDistance(event.touches);
-              scale = initialScale * (currentDistance / startDistance);
-              imageEntity.setAttribute('scale', `${scale} ${scale} ${scale}`);
-            }
+    allDraggableEntities.forEach(entity => {
+      entity.addEventListener('touchmove', function (event) {
+        // Handle dragging
+        if (event.touches.length === 1) {
+          const touch = event.touches[0];
+          const movementX = touch.movementX || (touch.pageX - touch.clientX);
+          const movementY = touch.movementY || (touch.pageY - touch.clientY);
+
+          // Apply drag movement
+          const position = entity.getAttribute('position');
+          entity.setAttribute('position', {
+            x: position.x + movementX * 0.01,
+            y: position.y - movementY * 0.01,
+            z: position.z
           });
         }
+
+        // Handle rotation
+        if (event.touches.length === 2) {
+          const touch1 = event.touches[0];
+          const touch2 = event.touches[1];
+          const centerX = (touch1.pageX + touch2.pageX) / 2;
+          const centerY = (touch1.pageY + touch2.pageY) / 2;
+
+          const rotationY = Math.atan2(centerY - window.innerHeight / 2, centerX - window.innerWidth / 2);
+          entity.object3D.rotation.y = rotationY; // Rotate based on touch position
+        }
       });
-    });
-
-    function getTouchDistance(touches) {
-      const dx = touches[0].pageX - touches[1].pageX;
-      const dy = touches[0].pageY - touches[1].pageY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    // Enable model rotation on touch
-    modelEntity.addEventListener('touchmove', function (event) {
-      if (event.touches.length === 1) {
-        const touch = event.touches[0];
-        const movementX = touch.movementX || (touch.pageX - touch.clientX);
-        const movementY = touch.movementY || (touch.pageY - touch.clientY);
-        
-        // Apply rotation based on touch movement
-        modelEntity.object3D.rotation.y += movementX * 0.01; // Horizontal rotation
-        modelEntity.object3D.rotation.x -= movementY * 0.01; // Vertical rotation
-      }
     });
   </script>
 
