@@ -38,9 +38,12 @@
 
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
     
+    <!-- Skybox for 360-degree experience -->
+    <a-sky color="#87CEEB"></a-sky>
+
     <!-- AR Text above the model -->
     <a-text value="El Milagro del Sol en Fátima" 
-      position="50 50 50"  
+      position="0 2 -3"  
       scale="2 2 2" 
       color="blue">
     </a-text>
@@ -50,8 +53,8 @@
       id="model"
       gltf-model="url(assets/mary1.glb)"
       scale="1 1 1" 
-      position="90 90 90"
-      rotation="60 60 60"
+      position="0 0 -2"
+      rotation="0 0 0"
       drag="enabled: true;" 
       rotate="enabled: true;" 
       touch-controls>
@@ -60,64 +63,63 @@
     <!-- Scenarios -->
     <a-entity id="scenario1" visible="false">
       <a-text value="Los tres pastorcitos: Lucía, Francisco, y Jacinta" 
-        position="0 1 0"  
-        scale="2 2 2" 
+        position="0 1.5 -1.5"  
+        scale="1.5 1.5 1.5" 
         color="yellow">
-        
       </a-text>
       <a-image src="https://github.com/12-Click/fatima/blob/ac44fa6bf75660a01e012bb3797c4aed1111e1e9/assets/pastorcitos.PNG" 
-        position="0 0 0" 
-        scale="2 2 2" 
+        position="0 0 -1" 
+        scale="1 1 1" 
         rotation="0 0 0" 
         touch-controls="enabled: true"></a-image>
     </a-entity>
 
     <a-entity id="scenario2" visible="false">
       <a-text value="La aparición de la Virgen María" 
-        position="0 1 0"  
-        scale="2 2 2" 
+        position="0 1.5 -1.5"  
+        scale="1.5 1.5 1.5" 
         color="yellow">
       </a-text>
       <a-image src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/virgen.jpg" 
-        position="0 0 0" 
-        scale="2 2 2" 
+        position="0 0 -1" 
+        scale="1 1 1" 
         rotation="0 0 0" 
         touch-controls="enabled: true"></a-image>
     </a-entity>
 
     <a-entity id="scenario3" visible="false">
       <a-text value="El Milagro del Sol" 
-        position="0 1 0"  
-        scale="2 2 2" 
+        position="0 1.5 -1.5"  
+        scale="1.5 1.5 1.5" 
         color="yellow">
       </a-text>
       <a-video src="https://example.com/your-video.mp4" 
-        position="0 0 0"  
-        scale="2 2 2"
+        position="0 0 -1"  
+        scale="1 1 1"
         rotation="0 0 0"></a-video>
     </a-entity>
 
     <!-- Navigation buttons -->
-    <a-box position="-3 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+    <a-box position="-2 0 -3" depth="0.1" height="0.5" width="1" color="blue" 
       event-set__enter="_event: mouseenter; color: green" 
       event-set__leave="_event: mouseleave; color: blue"
       class="clickable" 
       onclick="showScenario('scenario1')"></a-box>
-    <a-text value="Escenario 1" position="-3 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
+    <a-text value="Escenario 1" position="-2 0.5 -3" color="white" scale="1 1 1"></a-text>
 
-    <a-box position="3 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+    <a-box position="2 0 -3" depth="0.1" height="0.5" width="1" color="blue" 
       event-set__enter="_event: mouseenter; color: green" 
       event-set__leave="_event: mouseleave; color: blue"
       class="clickable" 
       onclick="showScenario('scenario2')"></a-box>
-    <a-text value="Escenario 2" position="3 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
+    <a-text value="Escenario 2" position="2 0.5 -3" color="white" scale="1 1 1"></a-text>
 
-    <a-box position="0 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+    <a-box position="0 -0.5 -3" depth="0.1" height="0.5" width="1" color="blue" 
       event-set__enter="_event: mouseenter; color: green" 
       event-set__leave="_event: mouseleave; color: blue"
       class="clickable" 
       onclick="showScenario('scenario3')"></a-box>
-    <a-text value="Escenario 3" position="0 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
+    <a-text value="Escenario 3" position="0 0 -3" color="white" scale="1 1 1"></a-text>
 
   </a-scene>
 
