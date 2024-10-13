@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Experience</title>
+  <title>Milagro de Fatima</title>
   <!-- Include A-Frame and AR.js -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
@@ -28,7 +28,7 @@
 </head>
 <body>
   <div id="ar-info">
-    Move your phone around to explore the AR scene!
+    Mueve tu telefono alrededor para descubrir la historia!
   </div>
 
   <!-- A-Frame AR Scene -->
@@ -38,9 +38,9 @@
     <a-entity 
       id="model"
       gltf-model="url(assets/mary1.glb)"
-      scale="2 2 2" 
+      scale="1 1 1" 
       position="0 0 -1"
-      rotation="0 0 0"
+      rotation="10 20 80"
       drag="enabled: true;" 
       rotate="enabled: true;">
     </a-entity>
@@ -54,7 +54,7 @@
 
     <!-- AR Image positioned to the left with pinch-to-zoom -->
     <a-image id="image" src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
-      position="-3 0 -5" 
+      position="0 0 9" 
       scale="2 2 2"
       rotation="0 0 0"
       touch-controls="enabled: true">
