@@ -44,24 +44,12 @@
 </a-entity>
 
 
-   <!-- Background for the text -->
-<a-plane 
-    position="2 1 -6"  <!-- Adjust position to be next to the model -->
-    width="4"          <!-- Adjust width as needed -->
-    height="1.5"      <!-- Adjust height as needed -->
-    color="white"     <!-- Background color -->
-    opacity="0.7">    <!-- Optional: make it slightly transparent -->
-</a-plane>
-
-<!-- AR Text above the model -->
-<a-text 
-    value="13 de Octubre de 1917" 
-    position="2 1 -6"  <!-- Align with the plane -->
-    scale="2 2 2" 
-    color="blue"
-    anchor="center">   <!-- Center the text -->
-</a-text>
-
+    <!-- AR Text above the model -->
+    <a-text value="13 de Octubre de 1917" 
+      position="0 1 -9"  
+      scale="2 2 2" 
+      color="blue">
+    </a-text> 
 
     <!-- AR Image positioned to the left -->
     <a-image id="image" src="assets/noticias.jpg" 
