@@ -3,77 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>360-Degree AR Storytelling Experience</title>
+    <title>Miracle of the Sun AR Experience</title>
+    
+    <!-- A-Frame Library -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/KhronosGroup/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
     <style>
         body {
             margin: 0;
-            overflow: hidden;
-            background: #000;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden; /* Prevent scrolling */
         }
 
-        a-scene {
+        #ar-container {
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 100vh;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            color: white;
+            max-width: 300px; /* Limit the width for readability */
+            text-align: left; /* Align text to the left */
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.5rem; /* Responsive font size */
+        }
+
+        p {
+            font-size: 1rem; /* Responsive font size */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .instructions {
+                font-size: 0.9rem; /* Slightly smaller text for smaller screens */
+                padding: 10px; /* Add some padding */
+            }
         }
     </style>
 </head>
 <body>
-    <a-scene embedded arjs='sourceType: webcam;'>
-        <a-entity 
-            id="model"
-            gltf-model="url(assets/mary1.glb)" 
-            scale="0.5 0.5 0.5"
-            position="0 0 -2"
-            rotation="0 0 0"
-            draggable
-            animation-mixer>
-        </a-entity>
-        <a-entity camera></a-entity>
-    </a-scene>
+    <div id="ar-container">
+        <a-scene embedded arjs>
+            <a-marker-camera preset="hiro"></a-marker-camera>
+            <a-entity id="sun" position="0 1 -5">
+                <a-sphere radius="1" color="#FFD700" position="0 1.5 0"></a-sphere>
+                <a-text value="Miracle of the Sun" position="0 2.5 0" color="#FFFFFF" align="center"></a-text>
+            </a-entity>
+        </a-scene>
+    </div>
+    <div class="instructions">
+        <h2>Welcome to the Miracle of the Sun AR Experience!</h2>
+        <p>Point your device around to discover more about the miracle.</p>
+    </div>
 
     <script>
-        AFRAME.registerComponent('draggable', {
-            init: function () {
-                this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
-                this.el.addEventListener('touchstart', this.onMouseDown.bind(this));
-            },
-
-            onMouseDown: function (evt) {
-                this.el.setAttribute('dragging', true);
-                this.lastMouseX = evt.clientX || evt.touches[0].clientX;
-                this.lastMouseY = evt.clientY || evt.touches[0].clientY;
-
-                document.addEventListener('mousemove', this.onMouseMove.bind(this));
-                document.addEventListener('touchmove', this.onMouseMove.bind(this));
-                document.addEventListener('mouseup', this.onMouseUp.bind(this));
-                document.addEventListener('touchend', this.onMouseUp.bind(this));
-            },
-
-            onMouseMove: function (evt) {
-                if (this.el.getAttribute('dragging')) {
-                    const deltaX = (evt.clientX || evt.touches[0].clientX) - this.lastMouseX;
-                    const deltaY = (evt.clientY || evt.touches[0].clientY) - this.lastMouseY;
-
-                    const rotation = this.el.getAttribute('rotation');
-                    rotation.y += deltaX * 0.1; // Rotate on Y-axis
-                    rotation.x -= deltaY * 0.1; // Rotate on X-axis
-
-                    this.el.setAttribute('rotation', rotation);
-
-                    this.lastMouseX = evt.clientX || evt.touches[0].clientX;
-                    this.lastMouseY = evt.clientY || evt.touches[0].clientY;
-                }
-            },
-
-            onMouseUp: function () {
-                this.el.setAttribute('dragging', false);
-                document.removeEventListener('mousemove', this.onMouseMove.bind(this));
-                document.removeEventListener('touchmove', this.onMouseMove.bind(this));
-                document.removeEventListener('mouseup', this.onMouseUp.bind(this));
-                document.removeEventListener('touchend', this.onMouseUp.bind(this));
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const sunEntity = document.getElementById('sun');
+            
+            // Add animation or interaction for the sun entity
+            sunEntity.addEventListener('click', () => {
+                sunEntity.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 5000');
+            });
         });
     </script>
 </body>
