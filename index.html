@@ -32,7 +32,9 @@
     <a-entity 
       gltf-model="url(assets/mary1.glb)"
       scale="2 2 2" 
-      position="0 0 -2">
+      position="0 0 -2"
+      rotation="0 0 0"
+      animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
     </a-entity>
 
     <!-- AR Text -->
@@ -55,6 +57,13 @@
     </a-video>
 
   </a-scene>
+
+  <script>
+    // Remove AR info after 3 seconds
+    setTimeout(() => {
+      document.getElementById('ar-info').style.display = 'none';
+    }, 3000);
+  </script>
 
 </body>
 </html>
