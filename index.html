@@ -45,55 +45,67 @@
     </a-text>
 
     <!-- AR Image positioned to the left -->
-    <a-image src="ssets/fatima1.jpg" 
+    <a-image id="image" src="https://github.com/12-Click/fatima/blob/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
       position="-3 0 -5"  <!-- Positioned left of the model -->
-      scale="2 2 2">
+      scale="2 2 2"
+      rotation="0 0 0">
     </a-image>
 
     <!-- AR Video positioned to the right -->
-    <a-video src="https://example.com/your-video.mp4" 
+    <a-video id="video" src="https://example.com/your-video.mp4" 
       position="3 0 -5"  <!-- Positioned right of the model -->
-      scale="2 2 2">
+      scale="2 2 2"
+      rotation="0 0 0">
     </a-video>
 
   </a-scene>
 
   <script>
-    const model = document.getElementById('model');
-    let lastX = 0;
-    let lastY = 0;
-    let isDragging = false;
+    // Function to add drag rotation to any entity
+    function enableDragRotation(entity) {
+      let lastX = 0;
+      let lastY = 0;
+      let isDragging = false;
 
-    // Touch event listeners for rotation
-    model.addEventListener('touchstart', (event) => {
-      isDragging = true;
-      lastX = event.touches[0].clientX;
-      lastY = event.touches[0].clientY;
-    });
-
-    model.addEventListener('touchmove', (event) => {
-      if (isDragging) {
-        const deltaX = event.touches[0].clientX - lastX;
-        const deltaY = event.touches[0].clientY - lastY;
-
-        // Get current rotation and apply deltas
-        const rotation = model.getAttribute('rotation');
-        const newRotation = {
-          x: rotation.x - deltaY * 0.2,  // Adjust sensitivity here
-          y: rotation.y + deltaX * 0.2,  // Adjust sensitivity here
-          z: rotation.z  // Keep z-axis rotation constant
-        };
-        
-        model.setAttribute('rotation', newRotation);
-
+      entity.addEventListener('touchstart', (event) => {
+        isDragging = true;
         lastX = event.touches[0].clientX;
         lastY = event.touches[0].clientY;
-      }
-    });
+      });
 
-    model.addEventListener('touchend', () => {
-      isDragging = false;
-    });
+      entity.addEventListener('touchmove', (event) => {
+        if (isDragging) {
+          const deltaX = event.touches[0].clientX - lastX;
+          const deltaY = event.touches[0].clientY - lastY;
+
+          // Get current rotation and apply deltas
+          const rotation = entity.getAttribute('rotation');
+          const newRotation = {
+            x: rotation.x - deltaY * 0.2,  // Adjust sensitivity here
+            y: rotation.y + deltaX * 0.2,  // Adjust sensitivity here
+            z: rotation.z  // Keep z-axis rotation constant
+          };
+
+          entity.setAttribute('rotation', newRotation);
+
+          lastX = event.touches[0].clientX;
+          lastY = event.touches[0].clientY;
+        }
+      });
+
+      entity.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
+
+    // Enable drag rotation for all AR elements
+    const model = document.getElementById('model');
+    const image = document.getElementById('image');
+    const video = document.getElementById('video');
+
+    enableDragRotation(model);
+    enableDragRotation(image);
+    enableDragRotation(video);
 
     // Remove AR info after 3 seconds
     setTimeout(() => {
