@@ -33,7 +33,8 @@
       id="model"
       gltf-model="url(assets/mary1.glb)"
       scale="2 2 2" 
-      position="0 0 -2">
+      position="0 0 -2"
+      rotation="0 0 0">  <!-- Initialize the rotation -->
     </a-entity>
 
     <!-- AR Text above the model -->
@@ -75,10 +76,15 @@
         const deltaX = event.touches[0].clientX - lastX;
         const deltaY = event.touches[0].clientY - lastY;
 
+        // Get current rotation and apply deltas
         const rotation = model.getAttribute('rotation');
-        rotation.y += deltaX * 0.2;  // Adjust sensitivity here
-        rotation.x -= deltaY * 0.2;  // Adjust sensitivity here
-        model.setAttribute('rotation', rotation);
+        const newRotation = {
+          x: rotation.x - deltaY * 0.2,  // Adjust sensitivity here
+          y: rotation.y + deltaX * 0.2,  // Adjust sensitivity here
+          z: rotation.z  // Keep z-axis rotation constant
+        };
+        
+        model.setAttribute('rotation', newRotation);
 
         lastX = event.touches[0].clientX;
         lastY = event.touches[0].clientY;
