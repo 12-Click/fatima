@@ -64,51 +64,6 @@
   </a-scene>
 
   <script>
-    // Function to add drag rotation to any entity
-    function enableDragRotation(entity) {
-      let lastX = 0;
-      let lastY = 0;
-      let isDragging = false;
-
-      entity.addEventListener('touchstart', (event) => {
-        isDragging = true;
-        lastX = event.touches[0].clientX;
-        lastY = event.touches[0].clientY;
-      });
-
-      entity.addEventListener('touchmove', (event) => {
-        if (isDragging) {
-          const deltaX = event.touches[0].clientX - lastX;
-          const deltaY = event.touches[0].clientY - lastY;
-
-          // Get current rotation and apply deltas
-          const rotation = entity.getAttribute('rotation');
-          const newRotation = {
-            x: rotation.x - deltaY * 0.2,  // Adjust sensitivity here
-            y: rotation.y + deltaX * 0.2,  // Adjust sensitivity here
-            z: rotation.z  // Keep z-axis rotation constant
-          };
-
-          entity.setAttribute('rotation', newRotation);
-
-          lastX = event.touches[0].clientX;
-          lastY = event.touches[0].clientY;
-        }
-      });
-
-      entity.addEventListener('touchend', () => {
-        isDragging = false;
-      });
-    }
-
-    // Enable drag rotation for all AR elements
-    const model = document.getElementById('model');
-    const image = document.getElementById('image');
-    const video = document.getElementById('video');
-
-    enableDragRotation(model);
-    enableDragRotation(image);
-    enableDragRotation(video);
 
     // Remove AR info after 3 seconds
     setTimeout(() => {
