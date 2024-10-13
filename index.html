@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
   <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
    <script src="https://unpkg.com/aframe-ar.js"></script>
+  <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
 
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -27,7 +28,9 @@
                 rotation="0 90 0"
                 animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
                 onclick="document.querySelector('a-sound').components.sound.playSound();"
+                rotate="enabled: true;"
                 drag="enabled: true;"> <!-- Add drag component -->
+        
       </a-entity>
       
       <a-text value="The Miracle of the Sun" 
