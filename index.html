@@ -1,133 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miracle of the Sun AR Experience</title>
-    
-    <!-- A-Frame and AR.js for markerless AR -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.js"></script>
-    
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            overflow: hidden; /* Prevent scrolling */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milagro de Fatima</title>
+  <!-- Include A-Frame and AR.js -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+  <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
 
-        #ar-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
+  <!-- Include a pinch zoom library -->
+  <script src="https://cdn.jsdelivr.net/gh/michaltakac/aframe-touch-controls@0.0.4/dist/aframe-touch-controls.min.js"></script>
 
-        .instructions {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            color: white;
-            max-width: 300px; /* Limit the width for readability */
-            text-align: left; /* Align text to the left */
-        }
-
-        h2 {
-            margin: 0;
-            font-size: 1.5rem; /* Responsive font size */
-        }
-
-        p {
-            font-size: 1rem; /* Responsive font size */
-        }
-
-        .text-box {
-            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-            padding: 10px;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 0.8rem;
-            position: absolute;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .instructions {
-                font-size: 0.9rem; /* Slightly smaller text for smaller screens */
-                padding: 10px; /* Add some padding */
-            }
-
-            .text-box {
-                font-size: 0.7rem; /* Adjust text size for smaller screens */
-            }
-        }
-    </style>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #ar-info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
-    <div id="ar-container">
-        <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-            <a-entity camera></a-entity> <!-- Enable camera for AR experience -->
-            
-            <!-- 3D Sun Entity -->
-            <a-entity id="sun" position="0 1 -5">
-                <a-sphere radius="1" color="#FFD700" position="0 1.5 0"></a-sphere>
-                <a-text value="Miracle of the Sun" position="0 2.5 0" color="#FFFFFF" align="center"></a-text>
-            </a-entity>
+  <div id="ar-info">
+    Mueve tu telefono alrededor para descubrir la historia!
+  </div>
 
-            <!-- Add images with text boxes -->
-            <a-image src="https://via.placeholder.com/150" position="-2 1 -3" width="1" height="1"></a-image>
-            <a-entity class="text-box" position="-2 0 -3">
-                <a-text value="Description of Image 1" align="center"></a-text>
-            </a-entity>
+    <!-- AR Text above the model -->
+    <a-text value="El Milagro del Sol en Fátima" 
+      position="0 1 1"  
+      scale="2 2 2" 
+      color="#1591ea">
+    </a-text>
 
-            <a-image src="https://via.placeholder.com/150" position="2 1 -3" width="1" height="1"></a-image>
-            <a-entity class="text-box" position="2 0 -3">
-                <a-text value="Description of Image 2" align="center"></a-text>
-            </a-entity>
+  <!-- A-Frame AR Scene -->
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    
+    <!-- 3D Model at the center -->
+    <a-entity 
+      id="model"
+      gltf-model="url(assets/mary1.glb)"
+      scale="1 1 1" 
+      position="0 0 -1"
+      rotation="10 20 10"
+      drag="enabled: true;" 
+      rotate="enabled: true;">
+    </a-entity>
 
-            <!-- Video 1 -->
-            <a-video src="https://www.w3schools.com/html/mov_bbb.mp4" position="-4 1 -5" width="2" height="1" autoplay="false"></a-video>
-            <a-entity class="text-box" position="-4 0 -5">
-                <a-text value="Watch Video 1" align="center"></a-text>
-            </a-entity>
+    <!-- AR Text above the model -->
+    <a-text value="Welcome to the AR Experience!" 
+      position="0 1 -6"  
+      scale="2 2 2" 
+      color="yellow">
+    </a-text>
 
-            <!-- Video 2 -->
-            <a-video src="https://www.w3schools.com/html/mov_bbb.mp4" position="4 1 -5" width="2" height="1" autoplay="false"></a-video>
-            <a-entity class="text-box" position="4 0 -5">
-                <a-text value="Watch Video 2" align="center"></a-text>
-            </a-entity>
-        </a-scene>
-    </div>
+    <!-- AR Image positioned to the left with pinch-to-zoom -->
+    <a-image id="image" src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
+      position="0 0 9" 
+      scale="2 2 2"
+      rotation="0 0 0"
+      touch-controls="enabled: true">
+    </a-image>
 
-    <div class="instructions">
-        <h2>Welcome to the Miracle of the Sun AR Experience!</h2>
-        <p>Point your device around to discover more about the miracle.</p>
-    </div>
+    <!-- AR Video positioned to the right -->
+    <a-video id="video" src="https://example.com/your-video.mp4" 
+      position="3 0 -8"  
+      scale="2 2 2"
+      rotation="0 0 0">
+    </a-video>
 
-    <script>
-        // Video entity click event to play video
-        document.querySelectorAll('a-video').forEach(video => {
-            video.addEventListener('click', () => {
-                const isPlaying = video.getAttribute('playing');
-                if (isPlaying) {
-                    video.setAttribute('playing', false);
-                    video.pause();
-                } else {
-                    video.setAttribute('playing', true);
-                    video.play();
-                }
-            });
+  </a-scene>
+
+  <script>
+    // Remove AR info after 3 seconds
+    setTimeout(() => {
+      document.getElementById('ar-info').style.display = 'none';
+    }, 3000);
+
+    // Add pinch zoom functionality for the image
+    const imageEntity = document.querySelector('#image');
+    let initialScale = 2;
+    let scale = initialScale;
+
+    imageEntity.addEventListener('touchstart', function (event) {
+      if (event.touches.length === 2) {
+        // Pinch zoom detected, capture initial distance
+        let startDistance = getTouchDistance(event.touches);
+        imageEntity.addEventListener('touchmove', function (event) {
+          if (event.touches.length === 2) {
+            let currentDistance = getTouchDistance(event.touches);
+            scale = initialScale * (currentDistance / startDistance);
+            imageEntity.setAttribute('scale', ${scale} ${scale} ${scale});
+          }
         });
+      }
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const sunEntity = document.getElementById('sun');
-            
-            // Add animation or interaction for the sun entity
-            sunEntity.addEventListener('click', () => {
-                sunEntity.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 5000');
-            });
-        });
-    </script>
+    function getTouchDistance(touches) {
+      const dx = touches[0].pageX - touches[1].pageX;
+      const dy = touches[0].pageY - touches[1].pageY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+  </script>
+
 </body>
-</html>
+</html> 
