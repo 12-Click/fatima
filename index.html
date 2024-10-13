@@ -7,7 +7,7 @@
   <!-- Include A-Frame and AR.js -->
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
-   <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
   <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
   
   <style>
@@ -37,29 +37,28 @@
       gltf-model="url(assets/mary1.glb)"
       scale="2 2 2" 
       position="0 0 -1"
-      rotation="0 0 0"  <!-- Initialize the rotation -->
+      rotation="0 0 0"
       drag="enabled: true;" 
       rotate="enabled: true;">
-      
     </a-entity>
 
     <!-- AR Text above the model -->
     <a-text value="Welcome to the AR Experience!" 
-      position="0 1 -6"  <!-- Positioned above the model -->
+      position="0 1 -6"  
       scale="2 2 2" 
       color="yellow">
     </a-text>
 
     <!-- AR Image positioned to the left -->
-    <a-image id="image" src="https://github.com/12-Click/fatima/blob/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
-      position="-3 0 -5"  <!-- Positioned left of the model -->
+    <a-image id="image" src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
+      position="-3 0 -5" 
       scale="2 2 2"
       rotation="0 0 0">
     </a-image>
 
     <!-- AR Video positioned to the right -->
     <a-video id="video" src="https://example.com/your-video.mp4" 
-      position="3 0 -8"  <!-- Positioned right of the model -->
+      position="3 0 -8"  
       scale="2 2 2"
       rotation="0 0 0">
     </a-video>
@@ -67,7 +66,6 @@
   </a-scene>
 
   <script>
-
     // Remove AR info after 3 seconds
     setTimeout(() => {
       document.getElementById('ar-info').style.display = 'none';
@@ -76,3 +74,4 @@
 
 </body>
 </html>
+
