@@ -95,42 +95,5 @@
     <!-- Camera setup for AR experience -->
     <a-entity camera></a-entity>
   </a-scene>
-
-  <script>
-    AFRAME.registerComponent('rotate-on-drag', {
-      schema: {
-        speed: {type: 'number', default: 1}
-      },
-      init: function () {
-        this.el.addEventListener('mousedown', this.startRotate.bind(this));
-        this.el.addEventListener('touchstart', this.startRotate.bind(this));
-        this.el.addEventListener('mouseup', this.stopRotate.bind(this));
-        this.el.addEventListener('touchend', this.stopRotate.bind(this));
-        this.el.addEventListener('mousemove', this.rotate.bind(this));
-        this.el.addEventListener('touchmove', this.rotate.bind(this));
-        this.isRotating = false;
-        this.previousX = 0;
-      },
-      startRotate: function (event) {
-        this.isRotating = true;
-        this.previousX = event.clientX || event.touches[0].clientX;
-        event.preventDefault();
-      },
-      stopRotate: function () {
-        this.isRotating = false;
-      },
-      rotate: function (event) {
-        if (!this.isRotating) return;
-
-        const currentX = event.clientX || event.touches[0].clientX;
-        const deltaX = currentX - this.previousX;
-        const rotation = this.el.getAttribute('rotation');
-        rotation.y += deltaX * this.data.speed;
-        this.el.setAttribute('rotation', rotation);
-        this.previousX = currentX;
-        event.preventDefault();
-      }
-    });
-  </script>
 </body>
 </html>
