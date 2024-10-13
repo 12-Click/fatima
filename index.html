@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Milagro de Fatima</title>
-  <!-- Include A-Frame and AR.js -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
-  <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
-  <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
+  <!-- Include Three.js and AR.js -->
+  <script src="https://threejs.org/build/three.min.js"></script>
+  <script src="https://rawgit.com/jeromeetienne/ar.js/master/three.js/build/ar-threex.js"></script>
   
   <style>
     body { margin: 0; overflow: hidden; }
@@ -28,65 +26,217 @@
     Mueve tu telefono alrededor para conocer la historia!
   </div>
 
-  <!-- A-Frame AR Scene -->
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-    
-    <!-- 3D Model at the center -->
-    <a-entity 
-      id="model"
-      gltf-model="url(assets/mary1.glb)"
-      scale="1.5 1.5 1.5" 
-      position="0 0 -2"
-      rotation="0 0 0"
-      drag="enabled: true;" 
-      rotate="enabled: true;"
-      animation="property: rotation; to: 0 360 0; loop: true; dur: 10000;">
-    </a-entity>
-
-   <!-- AR Images positioned around a sphere with look-at -->
-    <a-image src="assets/noticias.jpg" 
-      position="7 0 -3" 
-      scale="3 3 3" rotation="0 -10 0"
-      look-at="[camera]"></a-image>
-      
-    <a-image src="assets/pastorcitos.PNG" 
-      position="3.54 0 3.54" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-      
-    <a-image src="assets/sol.png" 
-      position="0 0 5" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-      
-    <a-image src="assets/multitud.PNG" 
-      position="-3.54 0 3.54" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-
-   <a-image src="assets/Hechos.PNG" 
-      position="-3 0 -3" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-
-    <a-image src="assets/fecha.PNG" 
-      position="0 0 -5" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-
-    <a-image src="assets/virgen.jpg" 
-      position="4 0 -4" 
-      scale="3 3 3" rotation="0 0 0"
-      look-at="[camera]"></a-image>
-
-  </a-scene>
+  <!-- Video element in the HTML -->
+  <video id="my-video" style="display: none;" loop muted>
+    <source src="assets/video.mp4" type="video/mp4">
+  </video>
 
   <script>
-    // Remove AR info after 3 seconds
-    setTimeout(() => {
-      document.getElementById('ar-info').style.display = 'none';
-    }, 3000);
-  </script>
+    let scene, camera, renderer, model, raycaster, touchVector, isDragging = false;
+    let previousTouch = { x: 0, y: 0 };
+    let rotationSpeed = 0.005; // Speed of rotation based on touch movement
+    let previousDistance = 0; // Used for pinch-to-zoom
+    let videoTexture;
 
+    function init() {
+      // Create scene
+      scene = new THREE.Scene();
+
+      // Set up camera
+      camera = new THREE.Camera();
+      scene.add(camera);
+
+      // Set up renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Initialize AR.js for markerless AR (or marker-based if using markers)
+      let arSource = new THREEx.ArToolkitSource({
+        sourceType: 'webcam'
+      });
+
+      arSource.init(function onReady() {
+        onResize();
+      });
+
+      window.addEventListener('resize', function() {
+        onResize();
+      });
+
+      // Initialize AR.js context
+      let arContext = new THREEx.ArToolkitContext({
+        cameraParametersUrl: 'https://rawgit.com/jeromeetienne/ar.js/master/data/camera_para.dat',
+        detectionMode: 'mono'
+      });
+
+      arContext.init(function onCompleted() {
+        camera.projectionMatrix.copy(arContext.getProjectionMatrix());
+      });
+
+      // Update AR context on every frame
+      function updateAR() {
+        if (arSource.ready === false) return;
+        arContext.update(arSource.domElement);
+      }
+
+      // Load 3D model
+      const loader = new THREE.GLTFLoader();
+      loader.load('assets/mary1.glb', function(gltf) {
+        model = gltf.scene;
+        model.scale.set(1.5, 1.5, 1.5);
+        model.position.set(0, 0, -2);
+        scene.add(model);
+      });
+
+      // Set up raycaster for touch interaction
+      raycaster = new THREE.Raycaster();
+      touchVector = new THREE.Vector2();
+
+      // Light
+      const light = new THREE.AmbientLight(0xffffff, 1); // Soft white light
+      scene.add(light);
+
+      // Add touch event listeners
+      renderer.domElement.addEventListener('touchstart', onTouchStart, false);
+      renderer.domElement.addEventListener('touchmove', onTouchMove, false);
+      renderer.domElement.addEventListener('touchend', onTouchEnd, false);
+
+      // Create the images as planes with textures
+      addImage('assets/noticias.jpg', 7, 0, -3);
+      addImage('assets/pastorcitos.PNG', 3.54, 0, 3.54);
+      addImage('assets/sol.png', 0, 0, 5);
+      addImage('assets/multitud.PNG', -3.54, 0, 3.54);
+      addImage('assets/Hechos.PNG', -3, 0, -3);
+      addImage('assets/fecha.PNG', 0, 0, -5);
+      addImage('assets/virgen.jpg', 4, 0, -4);
+
+      // Add video to the scene as a plane
+      addVideo('assets/video.mp4', 0, 0, -6);
+
+      // Animate loop
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+        updateAR(); // AR.js update
+
+        // Make all images look at the camera
+        scene.children.forEach(child => {
+          if (child.isMesh) {
+            child.lookAt(camera.position);
+          }
+        });
+      }
+      animate();
+    }
+
+    // Function to create image planes
+    function addImage(url, x, y, z) {
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(url, function(texture) {
+        const geometry = new THREE.PlaneGeometry(3, 3); // Plane size
+        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.position.set(x, y, z);
+        scene.add(plane);
+      });
+    }
+
+    // Function to create a video texture and add it to a plane
+    function addVideo(videoUrl, x, y, z) {
+      const video = document.getElementById('my-video'); // Reference the HTML video element
+      video.src = videoUrl;
+      video.load();
+      video.play(); // Play video automatically
+
+      // Create a video texture
+      videoTexture = new THREE.VideoTexture(video);
+      videoTexture.minFilter = THREE.LinearFilter;
+      videoTexture.magFilter = THREE.LinearFilter;
+      videoTexture.format = THREE.RGBFormat;
+
+      // Create a plane geometry for the video
+      const geometry = new THREE.PlaneGeometry(4, 2.25); // Adjust size to match video aspect ratio
+      const material = new THREE.MeshBasicMaterial({ map: videoTexture, side: THREE.DoubleSide });
+      const videoPlane = new THREE.Mesh(geometry, material);
+      videoPlane.position.set(x, y, z);
+      scene.add(videoPlane);
+    }
+
+    function onTouchStart(event) {
+      if (event.touches.length === 1) {
+        // Register touch start coordinates for dragging
+        previousTouch.x = event.touches[0].clientX;
+        previousTouch.y = event.touches[0].clientY;
+
+        // Set raycaster from touch point
+        touchVector.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+        touchVector.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+        
+        raycaster.setFromCamera(touchVector, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0) {
+          isDragging = true; // Only start dragging if the object was touched
+        }
+      } else if (event.touches.length === 2) {
+        // Store the initial distance between two touch points for pinch-to-zoom
+        previousDistance = getDistance(event.touches[0], event.touches[1]);
+      }
+    }
+
+    function onTouchMove(event) {
+      if (event.touches.length === 1 && isDragging) {
+        // Drag and rotate logic
+        const deltaX = event.touches[0].clientX - previousTouch.x;
+        const deltaY = event.touches[0].clientY - previousTouch.y;
+
+        if (model) {
+          model.rotation.y += deltaX * rotationSpeed; // Horizontal swipe rotates Y axis
+          model.rotation.x += deltaY * rotationSpeed; // Vertical swipe rotates X axis
+        }
+
+        // Update previous touch position
+        previousTouch.x = event.touches[0].clientX;
+        previousTouch.y = event.touches[0].clientY;
+      } else if (event.touches.length === 2) {
+        // Pinch-to-zoom logic
+        const currentDistance = getDistance(event.touches[0], event.touches[1]);
+        const zoomFactor = currentDistance / previousDistance;
+
+        if (model) {
+          // Scale the model based on the zoom factor
+          model.scale.set(
+            model.scale.x * zoomFactor,
+            model.scale.y * zoomFactor,
+            model.scale.z * zoomFactor
+          );
+        }
+
+        // Update previous distance for the next move event
+        previousDistance = currentDistance;
+      }
+    }
+
+    function onTouchEnd(event) {
+      isDragging = false; // Stop dragging
+    }
+
+    function getDistance(touch1, touch2) {
+      const dx = touch1.clientX - touch2.clientX;
+      const dy = touch1.clientY - touch2.clientY;
+      return Math.sqrt(dx * dx + dy * dy); // Calculate the distance between two points
+    }
+
+    function onResize() {
+      arSource.onResize();
+      arSource.copySizeTo(renderer.domElement);
+      if (arContext.arController !== null) {
+        arSource.copySizeTo(arContext.arController.canvas);
+      }
+    }
+
+    window.onload = init;
+  </script>
 </body>
 </html>
