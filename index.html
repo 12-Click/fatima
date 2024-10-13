@@ -9,8 +9,6 @@
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
   <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
   <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
-
-  <!-- Include a pinch zoom library -->
   <script src="https://cdn.jsdelivr.net/gh/michaltakac/aframe-touch-controls@0.0.4/dist/aframe-touch-controls.min.js"></script>
 
   <style>
@@ -24,55 +22,100 @@
       padding: 10px;
       z-index: 1;
     }
+    .scenario-text {
+      position: absolute;
+      color: yellow;
+      font-size: 24px;
+      text-align: center;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
   <div id="ar-info">
-    Mueve tu telefono alrededor para descubrir la historia!
+    Mueve tu teléfono alrededor para descubrir la historia!
   </div>
 
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    
     <!-- AR Text above the model -->
     <a-text value="El Milagro del Sol en Fátima" 
-      position="0 1 1"  
+      position="0 0 0"  
       scale="2 2 2" 
       color="#1591ea">
     </a-text>
 
-  <!-- A-Frame AR Scene -->
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-    
-    <!-- 3D Model at the center -->
+    <!-- 3D Model of Mary -->
     <a-entity 
       id="model"
       gltf-model="url(assets/mary1.glb)"
       scale="1 1 1" 
       position="0 0 -1"
-      rotation="10 20 10"
+      rotation="0 20 0"
       drag="enabled: true;" 
       rotate="enabled: true;">
     </a-entity>
 
-    <!-- AR Text above the model -->
-    <a-text value="Welcome to the AR Experience!" 
-      position="0 1 -6"  
-      scale="2 2 2" 
-      color="yellow">
-    </a-text>
+    <!-- Scenarios -->
+    <a-entity id="scenario1" visible="false">
+      <a-text value="Los tres pastorcitos: Lucía, Francisco, y Jacinta" 
+        position="0 1 0"  
+        scale="2 2 2" 
+        color="yellow">
+      </a-text>
+      <a-image src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/pastorcitos.jpg" 
+        position="0 0 0" 
+        scale="2 2 2" 
+        rotation="0 0 0" 
+        touch-controls="enabled: true"></a-image>
+    </a-entity>
 
-    <!-- AR Image positioned to the left with pinch-to-zoom -->
-    <a-image id="image" src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
-      position="0 0 9" 
-      scale="2 2 2"
-      rotation="0 0 0"
-      touch-controls="enabled: true">
-    </a-image>
+    <a-entity id="scenario2" visible="false">
+      <a-text value="La aparición de la Virgen María" 
+        position="0 1 0"  
+        scale="2 2 2" 
+        color="yellow">
+      </a-text>
+      <a-image src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/virgen.jpg" 
+        position="0 0 0" 
+        scale="2 2 2" 
+        rotation="0 0 0" 
+        touch-controls="enabled: true"></a-image>
+    </a-entity>
 
-    <!-- AR Video positioned to the right -->
-    <a-video id="video" src="https://example.com/your-video.mp4" 
-      position="3 0 -8"  
-      scale="2 2 2"
-      rotation="0 0 0">
-    </a-video>
+    <a-entity id="scenario3" visible="false">
+      <a-text value="El Milagro del Sol" 
+        position="0 1 0"  
+        scale="2 2 2" 
+        color="yellow">
+      </a-text>
+      <a-video src="https://example.com/your-video.mp4" 
+        position="0 0 0"  
+        scale="2 2 2"
+        rotation="0 0 0"></a-video>
+    </a-entity>
+
+    <!-- Navigation buttons -->
+    <a-box position="-3 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+      event-set__enter="_event: mouseenter; color: green" 
+      event-set__leave="_event: mouseleave; color: blue"
+      class="clickable" 
+      onclick="showScenario('scenario1')"></a-box>
+    <a-text value="Escenario 1" position="-3 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
+
+    <a-box position="3 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+      event-set__enter="_event: mouseenter; color: green" 
+      event-set__leave="_event: mouseleave; color: blue"
+      class="clickable" 
+      onclick="showScenario('scenario2')"></a-box>
+    <a-text value="Escenario 2" position="3 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
+
+    <a-box position="0 0 -4" depth="0.1" height="0.5" width="1" color="blue" 
+      event-set__enter="_event: mouseenter; color: green" 
+      event-set__leave="_event: mouseleave; color: blue"
+      class="clickable" 
+      onclick="showScenario('scenario3')"></a-box>
+    <a-text value="Escenario 3" position="0 0.5 -4" color="white" scale="1.5 1.5 1.5"></a-text>
 
   </a-scene>
 
@@ -81,6 +124,16 @@
     setTimeout(() => {
       document.getElementById('ar-info').style.display = 'none';
     }, 3000);
+
+    // Function to show the selected scenario
+    function showScenario(scenarioId) {
+      // Hide all scenarios
+      document.querySelectorAll('[id^="scenario"]').forEach(scenario => {
+        scenario.setAttribute('visible', 'false');
+      });
+      // Show the selected scenario
+      document.getElementById(scenarioId).setAttribute('visible', 'true');
+    }
 
     // Add pinch zoom functionality for the image
     const imageEntity = document.querySelector('#image');
