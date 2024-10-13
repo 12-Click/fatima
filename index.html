@@ -13,82 +13,76 @@
 
 </head>
 <body style="margin: 0; overflow: hidden;">
+  <!-- A-Frame scene for AR experience -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
     
+    <!-- Background music -->
     <a-sound src="assets/background-music.mp3" autoplay="true" loop="true" position="0 0 0"></a-sound>
 
     <!-- Scenario 1: The Miracle of the Sun -->
     <a-marker type="pattern" url="https://raw.githubusercontent.com/12-Click/fatima/refs/heads/main/assets/test1.patt">
       <a-entity gltf-model="url(assets/mary1.glb)" 
-                position="3 3 3" 
-                scale="2 2 3" 
+                position="0 1 0" 
+                scale="1 1 1" 
                 rotation="0 90 0"
                 animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;"
-                onclick="document.querySelector('a-sound').components.sound.playSound();"
-                rotate="enabled: true;"
-                drag="enabled: true;">
+                onclick="changeSizeAndPosition(this);">
       </a-entity>
       
       <a-text value="The Miracle of the Sun" 
-              position="0 0.8 0" 
+              position="0 2 0" 
               scale="1.5 1.5 1.5" 
               color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
               event-set__mouseenter="color: orange" 
               event-set__mouseleave="color: yellow" 
               onclick="alert('Learn more about the Miracle of the Sun!');">
       </a-text>
 
+      <!-- Optional video for Scenario 1 -->
       <a-video src="assets/scenario1-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
     </a-marker>
+
+    <!-- Additional Scenarios -->
 
     <!-- Scenario 2: Another Religious Event -->
     <a-marker type="pattern" url="https://raw.githubusercontent.com/username/repository-name/main/scenario2-pattern.patt">
       <a-entity gltf-model="url(assets/scenario2-model.glb)" 
-                position="0 0 0" 
+                position="0 1 0" 
                 scale="0.5 0.5 0.5"
-                rotation="0 90 0"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
-                onclick="document.querySelector('a-sound').components.sound.playSound();"
-                rotate="enabled: true;"
-                drag="enabled: true;">
+                onclick="changeSizeAndPosition(this);">
       </a-entity>
       
       <a-text value="Another Event" 
-              position="0 0.8 0" 
+              position="0 2 0" 
               scale="1.5 1.5 1.5" 
               color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
               event-set__mouseenter="color: orange" 
               event-set__mouseleave="color: yellow" 
               onclick="alert('Learn more about this event!');">
       </a-text>
 
+      <!-- Optional video for Scenario 2 -->
       <a-video src="assets/scenario2-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
     </a-marker>
 
     <!-- Scenario 3: Yet Another Event -->
     <a-marker type="pattern" url="https://raw.githubusercontent.com/username/repository-name/main/scenario3-pattern.patt">
       <a-entity gltf-model="url(assets/scenario3-model.glb)" 
-                position="0 0 0" 
+                position="0 1 0" 
                 scale="0.5 0.5 0.5"
-                rotation="0 90 0"
-                animation="property: position; to: 0 1 0; dur: 2000; easing: easeInOutQuad; loop: false;" 
-                onclick="document.querySelector('a-sound').components.sound.playSound();"
-                rotate="enabled: true;"
-                drag="enabled: true;">
+                onclick="changeSizeAndPosition(this);">
       </a-entity>
       
       <a-text value="Yet Another Event" 
-              position="0 0.8 0" 
+              position="0 2 0" 
               scale="1.5 1.5 1.5" 
               color="yellow"
-              animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: easeInOutQuad; loop: true;"
               event-set__mouseenter="color: orange" 
               event-set__mouseleave="color: yellow" 
               onclick="alert('Learn more about yet another event!');">
       </a-text>
 
+      <!-- Optional video for Scenario 3 -->
       <a-video src="assets/scenario3-video.mp4" position="0 1 -2" scale="2 1 1"></a-video>
     </a-marker>
 
@@ -97,40 +91,18 @@
   </a-scene>
 
   <script>
-    AFRAME.registerComponent('rotate-on-drag', {
-      schema: {
-        speed: {type: 'number', default: 1}
-      },
-      init: function () {
-        this.el.addEventListener('mousedown', this.startRotate.bind(this));
-        this.el.addEventListener('touchstart', this.startRotate.bind(this));
-        this.el.addEventListener('mouseup', this.stopRotate.bind(this));
-        this.el.addEventListener('touchend', this.stopRotate.bind(this));
-        this.el.addEventListener('mousemove', this.rotate.bind(this));
-        this.el.addEventListener('touchmove', this.rotate.bind(this));
-        this.isRotating = false;
-        this.previousX = 0;
-      },
-      startRotate: function (event) {
-        this.isRotating = true;
-        this.previousX = event.clientX || event.touches[0].clientX;
-        event.preventDefault();
-      },
-      stopRotate: function () {
-        this.isRotating = false;
-      },
-      rotate: function (event) {
-        if (!this.isRotating) return;
+    function changeSizeAndPosition(entity) {
+      // Generate random position within certain limits
+      const randomX = (Math.random() - 0.5) * 3; // Random X between -1.5 and 1.5
+      const randomZ = (Math.random() - 0.5) * 3; // Random Z between -1.5 and 1.5
+      
+      // Change the position of the entity
+      entity.setAttribute('position', { x: randomX, y: 1, z: randomZ }); // Position it randomly in the XZ plane
 
-        const currentX = event.clientX || event.touches[0].clientX;
-        const deltaX = currentX - this.previousX;
-        const rotation = this.el.getAttribute('rotation');
-        rotation.y += deltaX * this.data.speed;
-        this.el.setAttribute('rotation', rotation);
-        this.previousX = currentX;
-        event.preventDefault();
-      }
-    });
+      // Change the scale to a random size between 1 and 2
+      const randomScale = Math.random() + 1; // Scale between 1 and 2
+      entity.setAttribute('scale', { x: randomScale, y: randomScale, z: randomScale });
+    }
   </script>
 </body>
 </html>
