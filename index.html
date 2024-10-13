@@ -9,7 +9,10 @@
   <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
   <script src="https://unpkg.com/aframe-drag-component/dist/aframe-drag-component.min.js"></script>
   <script src="https://unpkg.com/aframe-rotate-component/dist/aframe-rotate-component.min.js"></script>
-  
+
+  <!-- Include a pinch zoom library -->
+  <script src="https://cdn.jsdelivr.net/gh/michaltakac/aframe-touch-controls@0.0.4/dist/aframe-touch-controls.min.js"></script>
+
   <style>
     body { margin: 0; overflow: hidden; }
     #ar-info {
@@ -37,7 +40,7 @@
       gltf-model="url(assets/mary1.glb)"
       scale="2 2 2" 
       position="0 0 -1"
-      rotation="0 0 -2"
+      rotation="0 0 0"
       drag="enabled: true;" 
       rotate="enabled: true;">
     </a-entity>
@@ -49,11 +52,12 @@
       color="yellow">
     </a-text>
 
-    <!-- AR Image positioned to the left -->
+    <!-- AR Image positioned to the left with pinch-to-zoom -->
     <a-image id="image" src="https://raw.githubusercontent.com/12-Click/fatima/bce0905ad711d18103c46cfb2c55fa77a2c75b85/assets/fatima1.jpg" 
       position="-3 0 -5" 
       scale="2 2 2"
-      rotation="0 0 0">
+      rotation="0 0 0"
+      touch-controls="enabled: true">
     </a-image>
 
     <!-- AR Video positioned to the right -->
@@ -70,8 +74,32 @@
     setTimeout(() => {
       document.getElementById('ar-info').style.display = 'none';
     }, 3000);
+
+    // Add pinch zoom functionality for the image
+    const imageEntity = document.querySelector('#image');
+    let initialScale = 2;
+    let scale = initialScale;
+
+    imageEntity.addEventListener('touchstart', function (event) {
+      if (event.touches.length === 2) {
+        // Pinch zoom detected, capture initial distance
+        let startDistance = getTouchDistance(event.touches);
+        imageEntity.addEventListener('touchmove', function (event) {
+          if (event.touches.length === 2) {
+            let currentDistance = getTouchDistance(event.touches);
+            scale = initialScale * (currentDistance / startDistance);
+            imageEntity.setAttribute('scale', `${scale} ${scale} ${scale}`);
+          }
+        });
+      }
+    });
+
+    function getTouchDistance(touches) {
+      const dx = touches[0].pageX - touches[1].pageX;
+      const dy = touches[0].pageY - touches[1].pageY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
   </script>
 
 </body>
 </html>
-
